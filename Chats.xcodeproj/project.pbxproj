@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		9524787AA55C11AB28A7FA2B /* Pods_Chats.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 305C70010153E0F5C32E5298 /* Pods_Chats.framework */; };
+		F005739423C25F3A00D1393C /* UIView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F005739323C25F3A00D1393C /* UIView + Extension.swift */; };
+		F005739723C2662000D1393C /* UIStackView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F005739623C2662000D1393C /* UIStackView + Extension.swift */; };
+		F005739923C267CD00D1393C /* UILabel + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F005739823C267CD00D1393C /* UILabel + Extension.swift */; };
+		F005739B23C2683600D1393C /* UIButton + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F005739A23C2683600D1393C /* UIButton + Extension.swift */; };
+		F005739D23C268FD00D1393C /* UIImageView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F005739C23C268FD00D1393C /* UIImageView + Extension.swift */; };
+		F005739F23C2715F00D1393C /* Constraints + Enxtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F005739E23C2715F00D1393C /* Constraints + Enxtension.swift */; };
 		F0C4AD4023BF782600879FEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C4AD3F23BF782600879FEB /* AppDelegate.swift */; };
 		F0C4AD4223BF782600879FEB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C4AD4123BF782600879FEB /* SceneDelegate.swift */; };
 		F0C4AD4923BF782A00879FEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F0C4AD4823BF782A00879FEB /* Assets.xcassets */; };
@@ -19,6 +25,12 @@
 		305C70010153E0F5C32E5298 /* Pods_Chats.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chats.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EEE0E0FAFB38E4CC8CFD4B5 /* Pods-Chats.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chats.debug.xcconfig"; path = "Target Support Files/Pods-Chats/Pods-Chats.debug.xcconfig"; sourceTree = "<group>"; };
 		8D874B2831777CB3161E6078 /* Pods-Chats.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chats.release.xcconfig"; path = "Target Support Files/Pods-Chats/Pods-Chats.release.xcconfig"; sourceTree = "<group>"; };
+		F005739323C25F3A00D1393C /* UIView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + Extension.swift"; sourceTree = "<group>"; };
+		F005739623C2662000D1393C /* UIStackView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView + Extension.swift"; sourceTree = "<group>"; };
+		F005739823C267CD00D1393C /* UILabel + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel + Extension.swift"; sourceTree = "<group>"; };
+		F005739A23C2683600D1393C /* UIButton + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton + Extension.swift"; sourceTree = "<group>"; };
+		F005739C23C268FD00D1393C /* UIImageView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView + Extension.swift"; sourceTree = "<group>"; };
+		F005739E23C2715F00D1393C /* Constraints + Enxtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constraints + Enxtension.swift"; sourceTree = "<group>"; };
 		F0C4AD3C23BF782600879FEB /* Chats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chats.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0C4AD3F23BF782600879FEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F0C4AD4123BF782600879FEB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -57,6 +69,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F005739523C2631000D1393C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F005739E23C2715F00D1393C /* Constraints + Enxtension.swift */,
+				F005739323C25F3A00D1393C /* UIView + Extension.swift */,
+				F005739623C2662000D1393C /* UIStackView + Extension.swift */,
+				F005739823C267CD00D1393C /* UILabel + Extension.swift */,
+				F005739A23C2683600D1393C /* UIButton + Extension.swift */,
+				F005739C23C268FD00D1393C /* UIImageView + Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		F0C4AD3323BF782600879FEB = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +106,7 @@
 				F0C4AD3F23BF782600879FEB /* AppDelegate.swift */,
 				F0C4AD4123BF782600879FEB /* SceneDelegate.swift */,
 				F0C4AD5C23C249D400879FEB /* AuthViewController.swift */,
+				F005739523C2631000D1393C /* Extensions */,
 				F0C4AD4823BF782A00879FEB /* Assets.xcassets */,
 				F0C4AD4A23BF782A00879FEB /* LaunchScreen.storyboard */,
 				F0C4AD4D23BF782A00879FEB /* Info.plist */,
@@ -220,9 +246,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F005739D23C268FD00D1393C /* UIImageView + Extension.swift in Sources */,
 				F0C4AD5D23C249D400879FEB /* AuthViewController.swift in Sources */,
 				F0C4AD4023BF782600879FEB /* AppDelegate.swift in Sources */,
+				F005739923C267CD00D1393C /* UILabel + Extension.swift in Sources */,
+				F005739723C2662000D1393C /* UIStackView + Extension.swift in Sources */,
+				F005739423C25F3A00D1393C /* UIView + Extension.swift in Sources */,
 				F0C4AD4223BF782600879FEB /* SceneDelegate.swift in Sources */,
+				F005739F23C2715F00D1393C /* Constraints + Enxtension.swift in Sources */,
+				F005739B23C2683600D1393C /* UIButton + Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

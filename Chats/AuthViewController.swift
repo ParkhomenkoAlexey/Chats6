@@ -12,12 +12,48 @@ import SwiftUI
 
 class AuthViewController: UIViewController {
     
+    let logoImageView = UIImageView(image: #imageLiteral(resourceName: "Logo"), contentMode: .scaleAspectFit)
+    
+    let googleLabel = UILabel(text: "Get started with", font: UIFont.init(name: "avenir", size: 20))
+    let emailLabel = UILabel(text: "Or sign up with", font: UIFont.init(name: "avenir", size: 20))
+    let alreadyOnboardLabel = UILabel(text: "Already onboard?", font: UIFont.init(name: "avenir", size: 20))
+    
+    let googleButton = UIButton(title: "Google", titleColor: .black, backgroundColor: .white, font: UIFont.init(name: "avenir", size: 20), isShadow: true)
+    let emailButton = UIButton(title: "Email", titleColor: .white, backgroundColor: #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1), font: UIFont.init(name: "avenir", size: 20), isShadow: false)
+    let loginButton = UIButton(title: "Login", titleColor: #colorLiteral(red: 0.8156862745, green: 0.007843137255, blue: 0.1058823529, alpha: 1), backgroundColor: .white, font: UIFont.init(name: "avenir", size: 20), isShadow: true)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .red
+        view.backgroundColor = .white
+        setupConstraints()
     }
     
+    private func setupConstraints() {
+        customizeGoogleButton()
+        let googleView = UIView(label: googleLabel, button: googleButton)
+        let emailView = UIView(label: emailLabel, button: emailButton)
+        let loginView = UIView(label: alreadyOnboardLabel, button: loginButton)
+
+        let stackView = UIStackView(arrangedSubviews: [googleView, emailView, loginView], axis: .vertical, spacing: 40)
+        
+        view.addSubview(logoImageView)
+        view.addSubview(stackView)
+        
+        logoImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 160).isActive = true
+        logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        stackView.topAnchor.constraint(equalTo: logoImageView.topAnchor, constant: 160).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
+    }
+    
+    private func customizeGoogleButton() {
+        let googleLogo = UIImageView(image: #imageLiteral(resourceName: "googleLogo"), contentMode: .scaleAspectFit)
+        googleButton.addSubview(googleLogo)
+        googleLogo.leadingAnchor.constraint(equalTo: googleButton.leadingAnchor, constant:  24).isActive = true
+        googleLogo.centerYAnchor.constraint(equalTo: googleButton.centerYAnchor).isActive = true
+    }
 }
 
 struct AuthVCProvider: PreviewProvider {
