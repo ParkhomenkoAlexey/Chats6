@@ -18,9 +18,9 @@ class AuthViewController: UIViewController {
     let emailLabel = UILabel(text: "Or sign up with", font: UIFont.init(name: "avenir", size: 20))
     let alreadyOnboardLabel = UILabel(text: "Already onboard?", font: UIFont.init(name: "avenir", size: 20))
     
-    let googleButton = UIButton(title: "Google", titleColor: .black, backgroundColor: .white, font: UIFont.init(name: "avenir", size: 20), isShadow: true)
-    let emailButton = UIButton(title: "Email", titleColor: .white, backgroundColor: #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1), font: UIFont.init(name: "avenir", size: 20), isShadow: false)
-    let loginButton = UIButton(title: "Login", titleColor: #colorLiteral(red: 0.8156862745, green: 0.007843137255, blue: 0.1058823529, alpha: 1), backgroundColor: .white, font: UIFont.init(name: "avenir", size: 20), isShadow: true)
+    let googleButton = UIButton(title: "Google", titleColor: .black, backgroundColor: .white, font: UIFont.init(name: "avenir", size: 20), isShadow: true, cornerRadius: 4)
+    let emailButton = UIButton(title: "Email", titleColor: .white, backgroundColor: #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1), font: UIFont.init(name: "avenir", size: 20), cornerRadius: 4)
+    let loginButton = UIButton(title: "Login", titleColor: #colorLiteral(red: 0.8156862745, green: 0.007843137255, blue: 0.1058823529, alpha: 1), backgroundColor: .white, font: UIFont.init(name: "avenir", size: 20), isShadow: true, cornerRadius: 4)
     
     override func viewDidLoad() {
         super.viewDidLoad()

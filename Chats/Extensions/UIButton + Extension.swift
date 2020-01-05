@@ -11,7 +11,7 @@ import UIKit
 
 extension UIButton {
     
-    convenience init(title: String, titleColor: UIColor, backgroundColor: UIColor, font: UIFont?, isShadow: Bool) {
+    convenience init(title: String, titleColor: UIColor, backgroundColor: UIColor = .clear, font: UIFont?, isShadow: Bool = false, cornerRadius: CGFloat = 0) {
         self.init(type: .system)
         
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -20,7 +20,7 @@ extension UIButton {
         self.backgroundColor = backgroundColor
         self.titleLabel?.font = font
         
-        self.layer.cornerRadius = 4
+        self.layer.cornerRadius = cornerRadius
         
         // shadows
         if isShadow {

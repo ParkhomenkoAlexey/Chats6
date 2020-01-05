@@ -13,9 +13,10 @@ extension UIStackView {
     
     convenience init(arrangedSubviews: [UIView], axis: NSLayoutConstraint.Axis, spacing: CGFloat) {
         self.init(arrangedSubviews: arrangedSubviews)
-        self.axis = .vertical
-        self.spacing = spacing
         self.translatesAutoresizingMaskIntoConstraints = false
+        self.axis = axis
+        self.spacing = spacing
+        
     }
 }
 
