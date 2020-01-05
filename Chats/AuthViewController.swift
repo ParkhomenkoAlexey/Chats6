@@ -30,7 +30,7 @@ class AuthViewController: UIViewController {
     }
     
     private func setupConstraints() {
-        customizeGoogleButton()
+        googleButton.customizeGoogleButton()
         let googleView = UIView(label: googleLabel, button: googleButton)
         let emailView = UIView(label: emailLabel, button: emailButton)
         let loginView = UIView(label: alreadyOnboardLabel, button: loginButton)
@@ -46,13 +46,6 @@ class AuthViewController: UIViewController {
         stackView.topAnchor.constraint(equalTo: logoImageView.topAnchor, constant: 160).isActive = true
         stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40).isActive = true
         stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
-    }
-    
-    private func customizeGoogleButton() {
-        let googleLogo = UIImageView(image: #imageLiteral(resourceName: "googleLogo"), contentMode: .scaleAspectFit)
-        googleButton.addSubview(googleLogo)
-        googleLogo.leadingAnchor.constraint(equalTo: googleButton.leadingAnchor, constant:  24).isActive = true
-        googleLogo.centerYAnchor.constraint(equalTo: googleButton.centerYAnchor).isActive = true
     }
 }
 
