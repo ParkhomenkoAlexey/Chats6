@@ -11,7 +11,12 @@ import UIKit
 
 extension UIButton {
     
-    convenience init(title: String, titleColor: UIColor, backgroundColor: UIColor = .clear, font: UIFont?, isShadow: Bool = false, cornerRadius: CGFloat = 0) {
+    convenience init(title: String,
+                     titleColor: UIColor,
+                     backgroundColor: UIColor = .clear,
+                     font: UIFont? = .avenir20(),
+                     isShadow: Bool = false,
+                     cornerRadius: CGFloat = 0) {
         self.init(type: .system)
         
         self.translatesAutoresizingMaskIntoConstraints = false

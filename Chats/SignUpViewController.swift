@@ -14,17 +14,17 @@ class SignUpViewController: UIViewController {
     
     let welcomeLabel = UILabel(text: "Good to see you!", font: UIFont.init(name: "avenir", size: 26))
     
-    let emailLabel = UILabel(text: "Email", font: UIFont.init(name: "avenir", size: 20))
-    let emailTextField = OneLineTextField(font: UIFont.init(name: "avenir", size: 20), borderStyle: .none)
-    let passwordLabel = UILabel(text: "Password", font: UIFont.init(name: "avenir", size: 20))
-    let passwordTextField = OneLineTextField(font: UIFont.init(name: "avenir", size: 20), borderStyle: .none)
-    let confirmPasswordLabel = UILabel(text: "Confirm password", font: UIFont.init(name: "avenir", size: 20))
-    let confirmPasswordTextField = OneLineTextField(font: UIFont.init(name: "avenir", size: 20), borderStyle: .none)
+    let emailLabel = UILabel(text: "Email")
+    let passwordLabel = UILabel(text: "Password")
+    let confirmPasswordLabel = UILabel(text: "Confirm password")
+    let alreadyOnboardLabel = UILabel(text: "Already onboard?")
     
-    let signUpButton = UIButton(title: "Sign Up", titleColor: .white, backgroundColor: #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1), font: UIFont.init(name: "avenir", size: 20), isShadow: false, cornerRadius: 4)
+    let emailTextField = OneLineTextField(font: .avenir20())
+    let passwordTextField = OneLineTextField(font: .avenir20())
+    let confirmPasswordTextField = OneLineTextField(font: .avenir20())
     
-    let alreadyOnboardLabel = UILabel(text: "Already onboard?", font: UIFont.init(name: "avenir", size: 20))
-    let loginButton = UIButton(title: "  Login", titleColor: #colorLiteral(red: 0.8156862745, green: 0.007843137255, blue: 0.1058823529, alpha: 1), font: UIFont.init(name: "avenir", size: 20))
+    let signUpButton = UIButton(title: "Sign Up", titleColor: .white, backgroundColor: .buttonDark(), cornerRadius: 4)
+    let loginButton = UIButton(title: "  Login", titleColor: .buttonRed())
     
     override func viewDidLoad() {
         super.viewDidLoad()

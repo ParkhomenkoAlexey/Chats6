@@ -11,7 +11,7 @@ import UIKit
 
 extension UILabel {
     
-    convenience init(text: String, font: UIFont?) {
+    convenience init(text: String, font: UIFont? = .avenir20()) {
         self.init()
         self.translatesAutoresizingMaskIntoConstraints = false
         self.text = text

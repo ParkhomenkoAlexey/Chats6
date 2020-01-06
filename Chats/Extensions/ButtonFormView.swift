@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension UIView {
+class ButtonFormView: UIView {
     
     convenience init(label: UILabel, button: UIButton) {
         self.init()
@@ -30,6 +30,5 @@ extension UIView {
         
         // чтобы высчитывался размер у self view
         bottomAnchor.constraint(equalTo: button.bottomAnchor).isActive = true
-        
     }
 }

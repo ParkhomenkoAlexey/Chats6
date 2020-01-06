@@ -11,7 +11,7 @@ import UIKit
 
 class OneLineTextField: UITextField {
     
-    convenience init(font: UIFont?, borderStyle: UITextField.BorderStyle) {
+    convenience init(font: UIFont? = .avenir20(), borderStyle: UITextField.BorderStyle = .none) {
         self.init()
         self.font = font
         self.borderStyle = borderStyle
@@ -20,7 +20,7 @@ class OneLineTextField: UITextField {
         //Mark: Setup Bottom-Border
         var bottomBorder = UIView()
         bottomBorder = UIView.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        bottomBorder.backgroundColor = #colorLiteral(red: 0.9019607843, green: 0.9019607843, blue: 0.9019607843, alpha: 1)
+        bottomBorder.backgroundColor = .textFieldLight()
         bottomBorder.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(bottomBorder)
         //Mark: Setup Anchors

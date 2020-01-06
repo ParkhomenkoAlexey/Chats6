@@ -12,22 +12,20 @@ import SwiftUI
 
 class LoginViewController: UIViewController {
     
-    let welcomeLabel = UILabel(text: "Welcome back!", font: UIFont.init(name: "avenir", size: 26))
+    let welcomeLabel = UILabel(text: "Welcome back!", font: .avenir26())
     
-    let loginWithLabel = UILabel(text: "Login with", font: UIFont.init(name: "avenir", size: 20))
-    let googleButton = UIButton(title: "Google", titleColor: .black, backgroundColor: .white, font: UIFont.init(name: "avenir", size: 20), isShadow: true, cornerRadius: 4)
+    let loginWithLabel = UILabel(text: "Login with")
+    let orLabel = UILabel(text: "or")
+    let emailLabel = UILabel(text: "Email")
+    let passwordLabel = UILabel(text: "Password")
+    let needAnAccountLabel = UILabel(text: "Need an account?")
     
-    let orLabel = UILabel(text: "or", font: UIFont.init(name: "avenir", size: 20))
+    let googleButton = UIButton(title: "Google", titleColor: .black, backgroundColor: .white, isShadow: true, cornerRadius: 4)
+    let emailTextField = OneLineTextField(font: .avenir20())
+    let passwordTextField = OneLineTextField(font: .avenir20())
     
-    let emailLabel = UILabel(text: "Email", font: UIFont.init(name: "avenir", size: 20))
-    let emailTextField = OneLineTextField(font: UIFont.init(name: "avenir", size: 20), borderStyle: .none)
-    let passwordLabel = UILabel(text: "Password", font: UIFont.init(name: "avenir", size: 20))
-    let passwordTextField = OneLineTextField(font: UIFont.init(name: "avenir", size: 20), borderStyle: .none)
-    
-    let loginButton = UIButton(title: "Login", titleColor: .white, backgroundColor: #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1), font: UIFont.init(name: "avenir", size: 20), isShadow: false, cornerRadius: 4)
-    
-    let needAnAccountLabel = UILabel(text: "Need an account?", font: UIFont.init(name: "avenir", size: 20))
-    let signUpButton = UIButton(title: "  Sign Up", titleColor: #colorLiteral(red: 0.8156862745, green: 0.007843137255, blue: 0.1058823529, alpha: 1), font: UIFont.init(name: "avenir", size: 20))
+    let loginButton = UIButton(title: "Login", titleColor: .white, backgroundColor: .buttonDark(), cornerRadius: 4)
+    let signUpButton = UIButton(title: "  Sign Up", titleColor: .buttonRed())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +35,7 @@ class LoginViewController: UIViewController {
     
     private func setupConstraints() {
         googleButton.customizeGoogleButton()
-        let loginWithView = UIView(label: loginWithLabel, button: googleButton)
+        let loginWithView = ButtonFormView(label: loginWithLabel, button: googleButton)
         let emailStackView = UIStackView(arrangedSubviews:
             [emailLabel, emailTextField],
                                          axis: .vertical, spacing: 0)
