@@ -30,6 +30,8 @@
 		F0F6B87923C4EF01007B7B48 /* ConversationsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6B87823C4EF01007B7B48 /* ConversationsCollectionViewController.swift */; };
 		F0F6B87B23C4F883007B7B48 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6B87A23C4F883007B7B48 /* MainTabBarController.swift */; };
 		F0F6B87D23C4F978007B7B48 /* PeopleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6B87C23C4F978007B7B48 /* PeopleViewController.swift */; };
+		F0F6B88023C50F9A007B7B48 /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6B87F23C50F9A007B7B48 /* ConversationCell.swift */; };
+		F0F6B88223C52455007B7B48 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6B88123C52455007B7B48 /* GradientView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +62,8 @@
 		F0F6B87823C4EF01007B7B48 /* ConversationsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsCollectionViewController.swift; sourceTree = "<group>"; };
 		F0F6B87A23C4F883007B7B48 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		F0F6B87C23C4F978007B7B48 /* PeopleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleViewController.swift; sourceTree = "<group>"; };
+		F0F6B87F23C50F9A007B7B48 /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
+		F0F6B88123C52455007B7B48 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +109,7 @@
 				F075D19923C35C4300FDF888 /* UISegmentedControl + Extension.swift */,
 				F075D19723C35A2400FDF888 /* UIFont + Extension.swift */,
 				F075D19B23C361DA00FDF888 /* UIColor + Extension.swift */,
+				F0F6B88123C52455007B7B48 /* GradientView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -134,6 +139,7 @@
 				F0C4AD4123BF782600879FEB /* SceneDelegate.swift */,
 				F0F6B87A23C4F883007B7B48 /* MainTabBarController.swift */,
 				F0F6B87823C4EF01007B7B48 /* ConversationsCollectionViewController.swift */,
+				F0F6B87F23C50F9A007B7B48 /* ConversationCell.swift */,
 				F0F6B87E23C4F9AD007B7B48 /* SignIn&Register */,
 				F005739523C2631000D1393C /* Extensions */,
 				F0F6B87C23C4F978007B7B48 /* PeopleViewController.swift */,
@@ -289,6 +295,7 @@
 			files = (
 				F075D19823C35A2400FDF888 /* UIFont + Extension.swift in Sources */,
 				F0E8347723C2A681005D15C8 /* LoginViewController.swift in Sources */,
+				F0F6B88223C52455007B7B48 /* GradientView.swift in Sources */,
 				F075D19A23C35C4300FDF888 /* UISegmentedControl + Extension.swift in Sources */,
 				F005739D23C268FD00D1393C /* UIImageView + Extension.swift in Sources */,
 				F0C4AD5D23C249D400879FEB /* AuthViewController.swift in Sources */,
@@ -307,6 +314,7 @@
 				F00573A123C281FD00D1393C /* SignUpViewController.swift in Sources */,
 				F075D19C23C361DA00FDF888 /* UIColor + Extension.swift in Sources */,
 				F005739B23C2683600D1393C /* UIButton + Extension.swift in Sources */,
+				F0F6B88023C50F9A007B7B48 /* ConversationCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
