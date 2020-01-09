@@ -18,6 +18,7 @@
 		F075D19823C35A2400FDF888 /* UIFont + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F075D19723C35A2400FDF888 /* UIFont + Extension.swift */; };
 		F075D19A23C35C4300FDF888 /* UISegmentedControl + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F075D19923C35C4300FDF888 /* UISegmentedControl + Extension.swift */; };
 		F075D19C23C361DA00FDF888 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F075D19B23C361DA00FDF888 /* UIColor + Extension.swift */; };
+		F0906A3F23C6B2C3004A5E8C /* WaitingChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0906A3E23C6B2C3004A5E8C /* WaitingChatCell.swift */; };
 		F0C4AD4023BF782600879FEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C4AD3F23BF782600879FEB /* AppDelegate.swift */; };
 		F0C4AD4223BF782600879FEB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C4AD4123BF782600879FEB /* SceneDelegate.swift */; };
 		F0C4AD4923BF782A00879FEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F0C4AD4823BF782A00879FEB /* Assets.xcassets */; };
@@ -25,7 +26,7 @@
 		F0C4AD5D23C249D400879FEB /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C4AD5C23C249D400879FEB /* AuthViewController.swift */; };
 		F0D2D27623C68E6600C00476 /* model.json in Resources */ = {isa = PBXBuildFile; fileRef = F0D2D27523C68E6600C00476 /* model.json */; };
 		F0D2D27823C6956B00C00476 /* SelfConfigureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D2D27723C6956B00C00476 /* SelfConfigureCell.swift */; };
-		F0D2D27A23C6967A00C00476 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D2D27923C6967A00C00476 /* ListCell.swift */; };
+		F0D2D27A23C6967A00C00476 /* ActiveChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D2D27923C6967A00C00476 /* ActiveChatCell.swift */; };
 		F0D2D27C23C69DF500C00476 /* Bundle-Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D2D27B23C69DF500C00476 /* Bundle-Decodable.swift */; };
 		F0D2D28423C69F3500C00476 /* MChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D2D28323C69F3500C00476 /* MChat.swift */; };
 		F0D2D28623C69F4E00C00476 /* MSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D2D28523C69F4E00C00476 /* MSection.swift */; };
@@ -52,6 +53,7 @@
 		F075D19723C35A2400FDF888 /* UIFont + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont + Extension.swift"; sourceTree = "<group>"; };
 		F075D19923C35C4300FDF888 /* UISegmentedControl + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl + Extension.swift"; sourceTree = "<group>"; };
 		F075D19B23C361DA00FDF888 /* UIColor + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
+		F0906A3E23C6B2C3004A5E8C /* WaitingChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingChatCell.swift; sourceTree = "<group>"; };
 		F0C4AD3C23BF782600879FEB /* Chats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chats.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0C4AD3F23BF782600879FEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F0C4AD4123BF782600879FEB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,7 +63,7 @@
 		F0C4AD5C23C249D400879FEB /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		F0D2D27523C68E6600C00476 /* model.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = model.json; sourceTree = "<group>"; };
 		F0D2D27723C6956B00C00476 /* SelfConfigureCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfConfigureCell.swift; sourceTree = "<group>"; };
-		F0D2D27923C6967A00C00476 /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
+		F0D2D27923C6967A00C00476 /* ActiveChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveChatCell.swift; sourceTree = "<group>"; };
 		F0D2D27B23C69DF500C00476 /* Bundle-Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle-Decodable.swift"; sourceTree = "<group>"; };
 		F0D2D28323C69F3500C00476 /* MChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MChat.swift; sourceTree = "<group>"; };
 		F0D2D28523C69F4E00C00476 /* MSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSection.swift; sourceTree = "<group>"; };
@@ -172,7 +174,8 @@
 		F0D2D27E23C69ECC00C00476 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				F0D2D27923C6967A00C00476 /* ListCell.swift */,
+				F0D2D27923C6967A00C00476 /* ActiveChatCell.swift */,
+				F0906A3E23C6B2C3004A5E8C /* WaitingChatCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -359,8 +362,9 @@
 				F0C4AD4223BF782600879FEB /* SceneDelegate.swift in Sources */,
 				F005739F23C2715F00D1393C /* Constraints + Enxtension.swift in Sources */,
 				F00573A123C281FD00D1393C /* SignUpViewController.swift in Sources */,
+				F0906A3F23C6B2C3004A5E8C /* WaitingChatCell.swift in Sources */,
 				F075D19C23C361DA00FDF888 /* UIColor + Extension.swift in Sources */,
-				F0D2D27A23C6967A00C00476 /* ListCell.swift in Sources */,
+				F0D2D27A23C6967A00C00476 /* ActiveChatCell.swift in Sources */,
 				F0D2D28423C69F3500C00476 /* MChat.swift in Sources */,
 				F005739B23C2683600D1393C /* UIButton + Extension.swift in Sources */,
 			);

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import SwiftUI
 
-class ListCell: UICollectionViewCell, SelfConfiguringCell {
+class ActiveChatCell: UICollectionViewCell, SelfConfiguringCell {
     
     static var reuseId: String = "ListCell"
     

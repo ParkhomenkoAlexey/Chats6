@@ -19,7 +19,6 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         setupSearchBar()
         setupCollectionView()
     }
@@ -43,7 +42,8 @@ class ListViewController: UIViewController {
         view.addSubview(collectionView)
         collectionView.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
         
-        collectionView.register(ListCell.self, forCellWithReuseIdentifier: ListCell.reuseId)
+        collectionView.register(ActiveChatCell.self, forCellWithReuseIdentifier: ActiveChatCell.reuseId)
+        collectionView.register(WaitingChatCell.self, forCellWithReuseIdentifier: WaitingChatCell.reuseId)
         
         createDataSource()
         reloadData()
@@ -60,8 +60,10 @@ class ListViewController: UIViewController {
     func createDataSource() {
         dataSource = UICollectionViewDiffableDataSource<MSection, MChat>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, chat) -> UICollectionViewCell? in
             switch self.sections[indexPath.section].type {
+            case "waitingChats":
+                return self.configure(cellType: WaitingChatCell.self, with: chat, for: indexPath)
             default:
-                return self.configure(cellType: ListCell.self, with: chat, for: indexPath)
+                return self.configure(cellType: ActiveChatCell.self, with: chat, for: indexPath)
             }
         })
     }
@@ -83,8 +85,10 @@ class ListViewController: UIViewController {
             let section = self.sections[sectionIndex]
             
             switch section.type {
+            case "waitingChats":
+                return self.createWaitingChatSection(using: section)
             default:
-                return self.createListSection(using: section)
+                return self.createActiveChatSection(using: section)
             }
         }
         
@@ -94,7 +98,25 @@ class ListViewController: UIViewController {
         return layout
     }
     
-    func createListSection(using section: MSection) -> NSCollectionLayoutSection {
+    // create single section
+    // TODO - сделать пересчет layout для waiting
+    func createWaitingChatSection(using section: MSection) -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                              heightDimension: .fractionalHeight(1))
+        let layoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
+        layoutItem.contentInsets = NSDirectionalEdgeInsets.init(top: 0, leading: 20, bottom: 0, trailing: 0)
+        
+        
+        let layoutGroupSize = NSCollectionLayoutSize(widthDimension: .estimated(108),
+                                                     heightDimension: .estimated(88))
+        let layoutGroup = NSCollectionLayoutGroup.horizontal(layoutSize: layoutGroupSize, subitems: [layoutItem])
+        
+        let layoutSection = NSCollectionLayoutSection(group: layoutGroup)
+        layoutSection.orthogonalScrollingBehavior = .continuous
+        return layoutSection
+    }
+    
+    func createActiveChatSection(using section: MSection) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                               heightDimension: .fractionalHeight(86))
         let layoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
