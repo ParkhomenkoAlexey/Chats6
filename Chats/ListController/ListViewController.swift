@@ -19,15 +19,29 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .green
+        
+        setupSearchBar()
         setupCollectionView()
     }
     
+    // MARK: Setup UI Elements
+    private func setupSearchBar() {
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        let seacrhController = UISearchController(searchResultsController: nil)
+        navigationItem.searchController = seacrhController
+        navigationItem.hidesSearchBarWhenScrolling = true
+        seacrhController.hidesNavigationBarDuringPresentation = false
+        seacrhController.obscuresBackgroundDuringPresentation = false
+        seacrhController.searchBar.delegate = self
+    }
+    
     private func setupCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .systemBackground
         view.addSubview(collectionView)
+        collectionView.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
         
         collectionView.register(ListCell.self, forCellWithReuseIdentifier: ListCell.reuseId)
         
@@ -35,11 +49,13 @@ class ListViewController: UIViewController {
         reloadData()
     }
     
+    // MARK: - Manage the data in UICV
+    
     func configure<T: SelfConfiguringCell>(cellType: T.Type, with chat: MChat, for indexPath: IndexPath) -> T {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.reuseId, for: indexPath) as? T else { fatalError("Unable to dequeue \(cellType)") }
-        cell.configure(with: chat)
-        return cell
-    }
+           guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.reuseId, for: indexPath) as? T else { fatalError("Unable to dequeue \(cellType)") }
+           cell.configure(with: chat)
+           return cell
+       }
     
     func createDataSource() {
         dataSource = UICollectionViewDiffableDataSource<MSection, MChat>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, chat) -> UICollectionViewCell? in
@@ -58,6 +74,49 @@ class ListViewController: UIViewController {
             snapshot.appendItems(section.items, toSection: section)
         }
         dataSource?.apply(snapshot)
+    }
+    
+    // MARK: - Customize data in UICV
+    
+    func createCompositionalLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
+            let section = self.sections[sectionIndex]
+            
+            switch section.type {
+            default:
+                return self.createListSection(using: section)
+            }
+        }
+        
+        let config = UICollectionViewCompositionalLayoutConfiguration()
+        config.interSectionSpacing = 20
+        layout.configuration = config
+        return layout
+    }
+    
+    func createListSection(using section: MSection) -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                              heightDimension: .fractionalHeight(86))
+        let layoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
+        layoutItem.contentInsets = NSDirectionalEdgeInsets.init(top: 0, leading: 20, bottom: 8, trailing: 20)
+        
+        
+        let layoutGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                                     heightDimension: .estimated(1))
+        let layoutGroup = NSCollectionLayoutGroup.vertical(layoutSize: layoutGroupSize, subitems: [layoutItem])
+        
+        let layoutSection = NSCollectionLayoutSection(group: layoutGroup)
+        
+        return layoutSection
+    }
+
+}
+
+// MARK: UISearchBarDelegate
+extension ListViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print(searchText)
     }
 }
 

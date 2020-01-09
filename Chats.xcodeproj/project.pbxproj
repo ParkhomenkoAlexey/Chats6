@@ -33,10 +33,8 @@
 		F0E8347723C2A681005D15C8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8347623C2A681005D15C8 /* LoginViewController.swift */; };
 		F0E8347923C2AA65005D15C8 /* SetupProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8347823C2AA65005D15C8 /* SetupProfileViewController.swift */; };
 		F0E8347B23C2B8E9005D15C8 /* AddPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E8347A23C2B8E9005D15C8 /* AddPhotoView.swift */; };
-		F0F6B87923C4EF01007B7B48 /* ConversationsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6B87823C4EF01007B7B48 /* ConversationsCollectionViewController.swift */; };
 		F0F6B87B23C4F883007B7B48 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6B87A23C4F883007B7B48 /* MainTabBarController.swift */; };
 		F0F6B87D23C4F978007B7B48 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6B87C23C4F978007B7B48 /* ListViewController.swift */; };
-		F0F6B88023C50F9A007B7B48 /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6B87F23C50F9A007B7B48 /* ConversationCell.swift */; };
 		F0F6B88223C52455007B7B48 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6B88123C52455007B7B48 /* GradientView.swift */; };
 /* End PBXBuildFile section */
 
@@ -71,10 +69,8 @@
 		F0E8347623C2A681005D15C8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		F0E8347823C2AA65005D15C8 /* SetupProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupProfileViewController.swift; sourceTree = "<group>"; };
 		F0E8347A23C2B8E9005D15C8 /* AddPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoView.swift; sourceTree = "<group>"; };
-		F0F6B87823C4EF01007B7B48 /* ConversationsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsCollectionViewController.swift; sourceTree = "<group>"; };
 		F0F6B87A23C4F883007B7B48 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		F0F6B87C23C4F978007B7B48 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
-		F0F6B87F23C50F9A007B7B48 /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
 		F0F6B88123C52455007B7B48 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -151,8 +147,6 @@
 				F0C4AD3F23BF782600879FEB /* AppDelegate.swift */,
 				F0C4AD4123BF782600879FEB /* SceneDelegate.swift */,
 				F0F6B87A23C4F883007B7B48 /* MainTabBarController.swift */,
-				F0F6B87823C4EF01007B7B48 /* ConversationsCollectionViewController.swift */,
-				F0F6B87F23C50F9A007B7B48 /* ConversationCell.swift */,
 				F0D2D28223C69F2500C00476 /* Models */,
 				F0D2D27D23C69EC000C00476 /* ListController */,
 				F0F6B87E23C4F9AD007B7B48 /* SignIn&Register */,
@@ -354,7 +348,6 @@
 				F0F6B87D23C4F978007B7B48 /* ListViewController.swift in Sources */,
 				F0C4AD4023BF782600879FEB /* AppDelegate.swift in Sources */,
 				F005739923C267CD00D1393C /* UILabel + Extension.swift in Sources */,
-				F0F6B87923C4EF01007B7B48 /* ConversationsCollectionViewController.swift in Sources */,
 				F005739723C2662000D1393C /* UIStackView + Extension.swift in Sources */,
 				F0D2D28623C69F4E00C00476 /* MSection.swift in Sources */,
 				F005739423C25F3A00D1393C /* ButtonFormView.swift in Sources */,
@@ -370,7 +363,6 @@
 				F0D2D27A23C6967A00C00476 /* ListCell.swift in Sources */,
 				F0D2D28423C69F3500C00476 /* MChat.swift in Sources */,
 				F005739B23C2683600D1393C /* UIButton + Extension.swift in Sources */,
-				F0F6B88023C50F9A007B7B48 /* ConversationCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -18,8 +18,9 @@ class MainTabBarController: UITabBarController {
         
         view.backgroundColor = .white
         
-        let conversationCollectionVC = ConversationsCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
         let listViewController = ListViewController()
+        let peopleViewController = UIViewController()
+        peopleViewController.view.backgroundColor = .gray
         
         tabBar.tintColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
         let boldConfig = UIImage.SymbolConfiguration(weight: .medium)
@@ -28,11 +29,11 @@ class MainTabBarController: UITabBarController {
         
         viewControllers = [
             generateNavigationController(rootViewController: listViewController,
-            title: "List",
-            image: peopleImage),
-            generateNavigationController(rootViewController: conversationCollectionVC,
                                          title: "Conversations",
-                                         image: convImage)
+                                         image: convImage),
+            generateNavigationController(rootViewController: peopleViewController,
+                                         title: "People",
+                                         image: peopleImage)
             
         ]
     }
