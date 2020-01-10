@@ -42,6 +42,8 @@ class ListViewController: UIViewController {
         view.addSubview(collectionView)
         collectionView.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
         
+        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.reuseId)
+        
         collectionView.register(ActiveChatCell.self, forCellWithReuseIdentifier: ActiveChatCell.reuseId)
         collectionView.register(WaitingChatCell.self, forCellWithReuseIdentifier: WaitingChatCell.reuseId)
         
@@ -66,6 +68,19 @@ class ListViewController: UIViewController {
                 return self.configure(cellType: ActiveChatCell.self, with: chat, for: indexPath)
             }
         })
+        
+        dataSource?.supplementaryViewProvider = { [weak self]
+            collectionView, kind, indexPath in
+            guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeader.reuseId, for: indexPath) as? SectionHeader else { return nil }
+            
+            guard let firstChat = self?.dataSource?.itemIdentifier(for: indexPath) else { return nil }
+            guard let section = self?.dataSource?.snapshot().sectionIdentifier(containingItem: firstChat) else { return nil }
+            if section.title.isEmpty { return nil }
+            
+            sectionHeader.title.text = section.title
+            return sectionHeader
+            
+        }
     }
     
     func reloadData() {
@@ -104,15 +119,21 @@ class ListViewController: UIViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                               heightDimension: .fractionalHeight(1))
         let layoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
-        layoutItem.contentInsets = NSDirectionalEdgeInsets.init(top: 0, leading: 20, bottom: 0, trailing: 0)
+        layoutItem.contentInsets = NSDirectionalEdgeInsets.init(top: 0, leading: 8, bottom: 0, trailing: 8)
         
         
-        let layoutGroupSize = NSCollectionLayoutSize(widthDimension: .estimated(108),
+        let layoutGroupSize = NSCollectionLayoutSize(widthDimension: .estimated(104),
                                                      heightDimension: .estimated(88))
         let layoutGroup = NSCollectionLayoutGroup.horizontal(layoutSize: layoutGroupSize, subitems: [layoutItem])
         
         let layoutSection = NSCollectionLayoutSection(group: layoutGroup)
         layoutSection.orthogonalScrollingBehavior = .continuous
+        layoutSection.contentInsets = NSDirectionalEdgeInsets.init(top: 16, leading: 12, bottom: 0, trailing: 12)
+        
+        let layoutSectionHeader = createSectionHeader()
+        layoutSectionHeader.contentInsets = NSDirectionalEdgeInsets.init(top: 0, leading: 5, bottom: 0, trailing: 0)
+        layoutSection.boundarySupplementaryItems = [layoutSectionHeader]
+        
         return layoutSection
     }
     
@@ -120,16 +141,32 @@ class ListViewController: UIViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                               heightDimension: .fractionalHeight(86))
         let layoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
-        layoutItem.contentInsets = NSDirectionalEdgeInsets.init(top: 0, leading: 20, bottom: 8, trailing: 20)
+        layoutItem.contentInsets = NSDirectionalEdgeInsets.init(top: 0, leading: 0, bottom: 8, trailing: 0)
         
         
         let layoutGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                                      heightDimension: .estimated(1))
         let layoutGroup = NSCollectionLayoutGroup.vertical(layoutSize: layoutGroupSize, subitems: [layoutItem])
         
+        
         let layoutSection = NSCollectionLayoutSection(group: layoutGroup)
+        layoutSection.contentInsets = NSDirectionalEdgeInsets.init(top: 16, leading: 20, bottom: 0, trailing: 20)
+        
+        let layoutSectionHeader = createSectionHeader()
+        layoutSection.boundarySupplementaryItems = [layoutSectionHeader]
         
         return layoutSection
+    }
+    
+    func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
+        let layoutSectionHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                                             heightDimension: .estimated(1))
+        let layoutSectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: layoutSectionHeaderSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top)
+
+        return layoutSectionHeader
     }
 
 }

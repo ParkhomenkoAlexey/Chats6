@@ -19,6 +19,7 @@
 		F075D19A23C35C4300FDF888 /* UISegmentedControl + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F075D19923C35C4300FDF888 /* UISegmentedControl + Extension.swift */; };
 		F075D19C23C361DA00FDF888 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F075D19B23C361DA00FDF888 /* UIColor + Extension.swift */; };
 		F0906A3F23C6B2C3004A5E8C /* WaitingChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0906A3E23C6B2C3004A5E8C /* WaitingChatCell.swift */; };
+		F0906A4123C6B8EA004A5E8C /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0906A4023C6B8EA004A5E8C /* SectionHeader.swift */; };
 		F0C4AD4023BF782600879FEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C4AD3F23BF782600879FEB /* AppDelegate.swift */; };
 		F0C4AD4223BF782600879FEB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C4AD4123BF782600879FEB /* SceneDelegate.swift */; };
 		F0C4AD4923BF782A00879FEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F0C4AD4823BF782A00879FEB /* Assets.xcassets */; };
@@ -54,6 +55,7 @@
 		F075D19923C35C4300FDF888 /* UISegmentedControl + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl + Extension.swift"; sourceTree = "<group>"; };
 		F075D19B23C361DA00FDF888 /* UIColor + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 		F0906A3E23C6B2C3004A5E8C /* WaitingChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingChatCell.swift; sourceTree = "<group>"; };
+		F0906A4023C6B8EA004A5E8C /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		F0C4AD3C23BF782600879FEB /* Chats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chats.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0C4AD3F23BF782600879FEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F0C4AD4123BF782600879FEB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -125,6 +127,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		F0906A4223C6B8EF004A5E8C /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				F0906A4023C6B8EA004A5E8C /* SectionHeader.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
 		F0C4AD3323BF782600879FEB = {
 			isa = PBXGroup;
 			children = (
@@ -167,6 +177,7 @@
 			children = (
 				F0F6B87C23C4F978007B7B48 /* ListViewController.swift */,
 				F0D2D27E23C69ECC00C00476 /* Cell */,
+				F0906A4223C6B8EF004A5E8C /* Header */,
 			);
 			path = ListController;
 			sourceTree = "<group>";
@@ -346,6 +357,7 @@
 				F0D2D27C23C69DF500C00476 /* Bundle-Decodable.swift in Sources */,
 				F0F6B88223C52455007B7B48 /* GradientView.swift in Sources */,
 				F075D19A23C35C4300FDF888 /* UISegmentedControl + Extension.swift in Sources */,
+				F0906A4123C6B8EA004A5E8C /* SectionHeader.swift in Sources */,
 				F005739D23C268FD00D1393C /* UIImageView + Extension.swift in Sources */,
 				F0C4AD5D23C249D400879FEB /* AuthViewController.swift in Sources */,
 				F0F6B87D23C4F978007B7B48 /* ListViewController.swift in Sources */,

@@ -60,6 +60,26 @@
                 "friendName": "Andrey Velvet",
                 "friendImage": "human10",
                 "lastMessage": "Do you want to dring some cola?"
+            },
+            {
+                "friendName": "Andrey Velvet1",
+                "friendImage": "human10",
+                "lastMessage": "Do you want to dring some cola?"
+            },
+            {
+                "friendName": "Nike Rose2",
+                "friendImage": "human9",
+                "lastMessage": "I miss you"
+            },
+            {
+                "friendName": "Andrey Velvet2",
+                "friendImage": "human10",
+                "lastMessage": "Do you want to dring some cola?"
+            },
+            {
+                "friendName": "Andrey Velvet12",
+                "friendImage": "human10",
+                "lastMessage": "Do you want to dring some cola?"
             }
 		]
 	}
