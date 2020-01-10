@@ -114,15 +114,8 @@
 				F0E8347423C29703005D15C8 /* OneLineTextField.swift */,
 				F0E8347A23C2B8E9005D15C8 /* AddPhotoView.swift */,
 				F0F6B88123C52455007B7B48 /* GradientView.swift */,
-				F005739E23C2715F00D1393C /* Constraints + Enxtension.swift */,
-				F005739623C2662000D1393C /* UIStackView + Extension.swift */,
-				F005739823C267CD00D1393C /* UILabel + Extension.swift */,
-				F005739A23C2683600D1393C /* UIButton + Extension.swift */,
-				F005739C23C268FD00D1393C /* UIImageView + Extension.swift */,
-				F075D19923C35C4300FDF888 /* UISegmentedControl + Extension.swift */,
-				F075D19723C35A2400FDF888 /* UIFont + Extension.swift */,
-				F075D19B23C361DA00FDF888 /* UIColor + Extension.swift */,
 				F0D2D27B23C69DF500C00476 /* Bundle-Decodable.swift */,
+				F0906A4323C8C94C004A5E8C /* UIKIt */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -133,6 +126,21 @@
 				F0906A4023C6B8EA004A5E8C /* SectionHeader.swift */,
 			);
 			path = Header;
+			sourceTree = "<group>";
+		};
+		F0906A4323C8C94C004A5E8C /* UIKIt */ = {
+			isa = PBXGroup;
+			children = (
+				F005739E23C2715F00D1393C /* Constraints + Enxtension.swift */,
+				F005739623C2662000D1393C /* UIStackView + Extension.swift */,
+				F005739823C267CD00D1393C /* UILabel + Extension.swift */,
+				F005739A23C2683600D1393C /* UIButton + Extension.swift */,
+				F005739C23C268FD00D1393C /* UIImageView + Extension.swift */,
+				F075D19923C35C4300FDF888 /* UISegmentedControl + Extension.swift */,
+				F075D19723C35A2400FDF888 /* UIFont + Extension.swift */,
+				F075D19B23C361DA00FDF888 /* UIColor + Extension.swift */,
+			);
+			path = UIKIt;
 			sourceTree = "<group>";
 		};
 		F0C4AD3323BF782600879FEB = {

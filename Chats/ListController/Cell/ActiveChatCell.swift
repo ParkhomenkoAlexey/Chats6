@@ -33,7 +33,14 @@ class ActiveChatCell: UICollectionViewCell, SelfConfiguringCell {
         lastMessage.text = chat.lastMessage
         friendImageView.image = UIImage(named: chat.friendImage)
     }
-    
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - Setup Constraints
+extension ActiveChatCell {
     func setupConstraints() {
         friendImageView.translatesAutoresizingMaskIntoConstraints = false
         friendImageView.backgroundColor = .black
@@ -65,10 +72,6 @@ class ActiveChatCell: UICollectionViewCell, SelfConfiguringCell {
         lastMessage.topAnchor.constraint(equalTo: friendName.bottomAnchor).isActive = true
         lastMessage.leadingAnchor.constraint(equalTo: friendImageView.trailingAnchor, constant: 16).isActive = true
         lastMessage.trailingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: -16).isActive = true
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 

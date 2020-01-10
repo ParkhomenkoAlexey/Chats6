@@ -93,7 +93,7 @@ class ListViewController: UIViewController {
         dataSource?.apply(snapshot)
     }
     
-    // MARK: - Customize data in UICV
+    // MARK: - Setup Layout
     
     func createCompositionalLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
@@ -168,7 +168,6 @@ class ListViewController: UIViewController {
 
         return layoutSectionHeader
     }
-
 }
 
 // MARK: UISearchBarDelegate

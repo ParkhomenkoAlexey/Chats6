@@ -35,6 +35,11 @@ class SetupProfileViewController: UIViewController {
         setupConstraints()
     }
     
+
+}
+
+// MARK: - Setup Constraints
+extension SetupProfileViewController {
     private func setupConstraints() {
         
         let fullNameStackView = UIStackView(arrangedSubviews:
@@ -77,7 +82,7 @@ class SetupProfileViewController: UIViewController {
     }
 }
 
-
+// MARK: - SwiftUI
 struct SetupProfileVCProvider: PreviewProvider {
     static var previews: some View {
         ContainterView().edgesIgnoringSafeArea(.all)

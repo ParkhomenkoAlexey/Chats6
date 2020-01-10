@@ -28,7 +28,10 @@ class AuthViewController: UIViewController {
         view.backgroundColor = .white
         setupConstraints()
     }
-    
+}
+
+// MARK: - Setup Constraints
+extension AuthViewController {
     private func setupConstraints() {
         googleButton.customizeGoogleButton()
         let googleView = ButtonFormView(label: googleLabel, button: googleButton)
@@ -49,6 +52,7 @@ class AuthViewController: UIViewController {
     }
 }
 
+// MARK: - SwiftUI
 struct AuthVCProvider: PreviewProvider {
     static var previews: some View {
         ContainterView().edgesIgnoringSafeArea(.all)

@@ -31,7 +31,10 @@ class SignUpViewController: UIViewController {
         view.backgroundColor = .white
         setupConstraints()
     }
-    
+}
+
+// MARK: - Setup Constraints
+extension SignUpViewController {
     private func setupConstraints() {
         let emailStackView = UIStackView(arrangedSubviews:
             [emailLabel, emailTextField],
@@ -69,7 +72,7 @@ class SignUpViewController: UIViewController {
     }
 }
 
-
+// MARK: - SwiftUI
 struct SignUpVCProvider: PreviewProvider {
     static var previews: some View {
         ContainterView().edgesIgnoringSafeArea(.all)

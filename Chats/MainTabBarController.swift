@@ -47,6 +47,7 @@ class MainTabBarController: UITabBarController {
     
 }
 
+// MARK: - SwiftUI
 struct MainTabBarProvider: PreviewProvider {
     static var previews: some View {
         ContainterView().edgesIgnoringSafeArea(.all)

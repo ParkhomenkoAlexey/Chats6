@@ -32,7 +32,10 @@ class LoginViewController: UIViewController {
         view.backgroundColor = .white
         setupConstraints()
     }
-    
+}
+
+// MARK: - Setup Constraints
+extension LoginViewController {
     private func setupConstraints() {
         googleButton.customizeGoogleButton()
         let loginWithView = ButtonFormView(label: loginWithLabel, button: googleButton)
@@ -68,6 +71,7 @@ class LoginViewController: UIViewController {
     }
 }
 
+// MARK: - SwiftUI
 struct LoginVCProvider: PreviewProvider {
     static var previews: some View {
         ContainterView().edgesIgnoringSafeArea(.all)
