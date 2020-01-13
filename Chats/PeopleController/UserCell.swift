@@ -1,17 +1,17 @@
 //
-//  WaitingChatCell.swift
+//  HumanCell.swift
 //  Chats
 //
-//  Created by Алексей Пархоменко on 09.01.2020.
+//  Created by Алексей Пархоменко on 10.01.2020.
 //  Copyright © 2020 Алексей Пархоменко. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-class WaitingChatCell: UICollectionViewCell, SelfConfiguringCell {
-    
-    static var reuseId: String = "WaitingChatCell"
+class UserCell: UICollectionViewCell {
+
+    static var reuseId: String = "UserCell"
     
     let friendImageView = UIImageView()
     
@@ -26,18 +26,14 @@ class WaitingChatCell: UICollectionViewCell, SelfConfiguringCell {
     
     func setupConstraints() {
         friendImageView.translatesAutoresizingMaskIntoConstraints = false
-        friendImageView.backgroundColor = .red
+        friendImageView.backgroundColor = .blue
         addSubview(friendImageView)
         friendImageView.fillSuperview()
     }
     
-//    func configure(with chat: MChat) {
-//        
-//    }
-    
-    func configure<U>(with value: U) where U : Decodable {
-        guard let chat: MChat = value as? MChat else { return }
-        friendImageView.image = UIImage(named: chat.friendImage)
+    func configure(with user: MUser) {
+//        friendImageView.image = UIImage(named: chat.friendImage)
+        print("123")
     }
     
     required init?(coder: NSCoder) {

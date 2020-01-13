@@ -28,7 +28,14 @@ class ActiveChatCell: UICollectionViewCell, SelfConfiguringCell {
         self.clipsToBounds = true
     }
     
-    func configure(with chat: MChat) {
+//    func configure(with chat: MChat) {
+//        friendName.text = chat.friendName
+//        lastMessage.text = chat.lastMessage
+//        friendImageView.image = UIImage(named: chat.friendImage)
+//    }
+    
+    func configure<U>(with value: U) where U : Decodable {
+        guard let chat: MChat = value as? MChat else { return }
         friendName.text = chat.friendName
         lastMessage.text = chat.lastMessage
         friendImageView.image = UIImage(named: chat.friendImage)
