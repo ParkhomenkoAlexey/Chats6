@@ -1,0 +1,77 @@
+[
+    {
+        "username": "Bob River",
+        "avatarStringURL": "human1",
+        "sex": "male"
+    },
+    {
+        "username": "John Black",
+        "avatarStringURL": "human2",
+        "sex": "female"
+    },
+    {
+        "username": "Misha Red",
+        "avatarStringURL": "human3",
+        "sex": "female"
+    },
+    {
+        "username": "Alex Film",
+        "avatarStringURL": "human4",
+        "sex": "male"
+    },
+    {
+        "username": "Robert Martin",
+        "avatarStringURL": "human5",
+        "sex": "male"
+    },
+    {
+        "username": "Peter Brown",
+        "avatarStringURL": "human6",
+        "sex": "male"
+    },
+    {
+        "username": "Sarah White",
+        "avatarStringURL": "human7",
+        "sex": "male"
+    },
+    {
+        "username": "Melven Strong Melven Strong",
+        "avatarStringURL": "human8",
+        "sex": "female"
+    },
+    {
+        "username": "Nike Rose",
+        "avatarStringURL": "human9",
+        "sex": "male"
+    },
+    {
+        "username": "Andrey Velvet",
+        "avatarStringURL": "human10",
+        "sex": "female"
+    },
+    {
+        "username": "Peter Brown11",
+        "avatarStringURL": "human6",
+        "sex": "male"
+    },
+    {
+        "username": "Sarah White11",
+        "avatarStringURL": "human7",
+        "sex": "male"
+    },
+    {
+        "username": "Melven Strong Melven Strong11",
+        "avatarStringURL": "human8",
+        "sex": "female"
+    },
+    {
+        "username": "Nike Rose11",
+        "avatarStringURL": "human9",
+        "sex": "male"
+    },
+    {
+        "username": "Andrey Velvet11",
+        "avatarStringURL": "human10",
+        "sex": "female"
+    }
+]

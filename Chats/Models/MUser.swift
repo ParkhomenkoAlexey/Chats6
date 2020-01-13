@@ -11,6 +11,6 @@ import UIKit
 
 struct MUser: Decodable, Hashable {
     var username: String
-    var avatarURL: URL
+    var avatarStringURL: String
     var sex: String
 }

@@ -11,7 +11,7 @@ import UIKit
 
 class ListViewController: UIViewController {
     
-    let sections = Bundle.main.decode([MSection].self, from: "model.json")
+    let sections = Bundle.main.decode([MSection].self, from: "chats.json")
     
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<MSection, MChat>?
@@ -25,12 +25,12 @@ class ListViewController: UIViewController {
     
     // MARK: Setup UI Elements
     private func setupSearchBar() {
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
         navigationController?.navigationBar.shadowImage = UIImage()
         let seacrhController = UISearchController(searchResultsController: nil)
         navigationItem.searchController = seacrhController
-        navigationItem.hidesSearchBarWhenScrolling = true
-        seacrhController.hidesNavigationBarDuringPresentation = false
+        navigationItem.hidesSearchBarWhenScrolling = false
+        seacrhController.hidesNavigationBarDuringPresentation = true
         seacrhController.obscuresBackgroundDuringPresentation = false
         seacrhController.searchBar.delegate = self
     }
@@ -54,10 +54,10 @@ class ListViewController: UIViewController {
     // MARK: - Manage the data in UICV
     
     func configure<T: SelfConfiguringCell, U: Decodable>(cellType: T.Type, with value: U, for indexPath: IndexPath) -> T {
-           guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.reuseId, for: indexPath) as? T else { fatalError("Unable to dequeue \(cellType)") }
-           cell.configure(with: value)
-           return cell
-       }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.reuseId, for: indexPath) as? T else { fatalError("Unable to dequeue \(cellType)") }
+        cell.configure(with: value)
+        return cell
+    }
     
     func createDataSource() {
         dataSource = UICollectionViewDiffableDataSource<MSection, MChat>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, chat) -> UICollectionViewCell? in
@@ -70,14 +70,20 @@ class ListViewController: UIViewController {
         })
         
         dataSource?.supplementaryViewProvider = { [weak self]
-            collectionView, kind, indexPath in
-            guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeader.reuseId, for: indexPath) as? SectionHeader else { return nil }
+            collectionView,
+            kind,
+            indexPath in
+            
+            guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeader.reuseId, for: indexPath) as? SectionHeader else { fatalError("Cannot create new supplementary") }
             
             guard let firstChat = self?.dataSource?.itemIdentifier(for: indexPath) else { return nil }
             guard let section = self?.dataSource?.snapshot().sectionIdentifier(containingItem: firstChat) else { return nil }
             if section.title.isEmpty { return nil }
             
-            sectionHeader.title.text = section.title
+            sectionHeader.configure(
+                text: section.title,
+                font: .laoSangamMN20(),
+                textColor: #colorLiteral(red: 0.5741485357, green: 0.5741624236, blue: 0.574154973, alpha: 1))
             return sectionHeader
             
         }

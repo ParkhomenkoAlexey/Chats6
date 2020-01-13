@@ -15,23 +15,18 @@ class SectionHeader: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
-        customizeElements()
-        setupConstraints()
-    }
-    
-    func customizeElements() {
-
-        title.textColor = #colorLiteral(red: 0.5741485357, green: 0.5741624236, blue: 0.574154973, alpha: 1)
-        title.font = .laoSangamMN20()
         title.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    func setupConstraints() {
+        
         addSubview(title)
         title.fillSuperview()
     }
 
+    func configure(text: String, font: UIFont?, textColor: UIColor) {
+        title.textColor = textColor
+        title.font = font
+        title.text = text
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

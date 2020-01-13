@@ -26,14 +26,9 @@ class WaitingChatCell: UICollectionViewCell, SelfConfiguringCell {
     
     func setupConstraints() {
         friendImageView.translatesAutoresizingMaskIntoConstraints = false
-        friendImageView.backgroundColor = .red
         addSubview(friendImageView)
         friendImageView.fillSuperview()
     }
-    
-//    func configure(with chat: MChat) {
-//        
-//    }
     
     func configure<U>(with value: U) where U : Decodable {
         guard let chat: MChat = value as? MChat else { return }
