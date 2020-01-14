@@ -10,8 +10,6 @@ import UIKit
 
 class PeopleViewController: UIViewController {
     
-    let users = Bundle.main.decode([MUser].self, from: "users.json")
-    
     enum Section: Int, CaseIterable {
         case main
         func description(usersCount: Int) -> String {
@@ -22,7 +20,8 @@ class PeopleViewController: UIViewController {
         }
     }
     
-    var dataSource: UICollectionViewDiffableDataSource<Section, MUser>!
+    let usersController = UsersController()
+    var dataSource: UICollectionViewDiffableDataSource<Section, UsersController.MUser>!
     var collectionView: UICollectionView! = nil
     
     override func viewDidLoad() {
@@ -30,18 +29,19 @@ class PeopleViewController: UIViewController {
         setupCollectionView()
         setupSearchBar()
         createDataSource()
-        reloadData()
+        reloadData(with: nil)
     }
     
     // MARK: Setup UI Elements
     private func setupSearchBar() {
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
         navigationController?.navigationBar.shadowImage = UIImage()
-        let seacrhController = UISearchController(searchResultsController: nil)
-        navigationItem.searchController = seacrhController
+        let searchController = UISearchController(searchResultsController: nil)
+        navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
-        seacrhController.hidesNavigationBarDuringPresentation = true
-        seacrhController.obscuresBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
     }
     
     private func setupCollectionView() {
@@ -64,7 +64,7 @@ class PeopleViewController: UIViewController {
     }
     
     private func createDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Section, MUser>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, user) -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<Section, UsersController.MUser>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, user) -> UICollectionViewCell? in
             
             guard let section = Section(rawValue: indexPath.section)
             else { fatalError("Unknown section kind") }
@@ -83,7 +83,6 @@ class PeopleViewController: UIViewController {
             
             guard let section = Section(rawValue: indexPath.section)
                 else { fatalError("Unknown section kind") }
-            
             guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: SectionHeader.reuseId,
@@ -92,7 +91,8 @@ class PeopleViewController: UIViewController {
                     fatalError("Cannot create new header")
             }
             
-            let text = section.description(usersCount: (self?.users.count)!)
+            let items = self?.dataSource.snapshot().itemIdentifiers(inSection: .main)
+            let text = section.description(usersCount: items?.count ?? 0)
             sectionHeader.configure(
                 text: text,
                 font: .systemFont(ofSize: 36, weight: .light),
@@ -102,12 +102,15 @@ class PeopleViewController: UIViewController {
         }
     }
     
-    private func reloadData() {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, MUser>()
+    // TODO: limit don't work
+    private func reloadData(with searchText: String?) {
+        let users = usersController.filteredUsers(with: searchText)
+        
+        var snapshot = NSDiffableDataSourceSnapshot<Section, UsersController.MUser>()
         snapshot.appendSections([.main])
         snapshot.appendItems(users, toSection: .main)
         
-        self.dataSource.apply(snapshot)
+        self.dataSource.apply(snapshot, animatingDifferences: true)
     }
 }
 
@@ -145,6 +148,12 @@ extension PeopleViewController {
             alignment: .top)
 
         return layoutSectionHeader
+    }
+}
+
+extension PeopleViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        reloadData(with: searchText)
     }
 }
 

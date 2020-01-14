@@ -15,6 +15,7 @@ class UserCell: UICollectionViewCell, SelfConfiguringCell {
     
     let userImageView = UIImageView()
     let userName = UILabel(text: "test", font: .laoSangamMN20())
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -22,20 +23,38 @@ class UserCell: UICollectionViewCell, SelfConfiguringCell {
         setupConstraints()
         
         self.layer.cornerRadius = 4
-        self.clipsToBounds = true
+
+        self.layer.shadowColor = #colorLiteral(red: 0.7411764706, green: 0.7411764706, blue: 0.7411764706, alpha: 1)
+        self.layer.shadowRadius = 3
+        self.layer.shadowOpacity = 0.5
+        
+        self.layer.shadowOffset = CGSize(width: 0, height: 4)
     }
     
+    // TODO - fix shadows with image
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        userImageView.layer.cornerRadius = 4
+        userImageView.clipsToBounds = true
+    }
+    
+    
+    
+    
+    
     func configure<U>(with value: U) where U : Decodable {
-        guard let user: MUser = value as? MUser else { return }
+        guard let user: UsersController.MUser = value as? UsersController.MUser else { return }
         userImageView.image = UIImage(named: user.avatarStringURL)
         userName.text = user.username
     }
     
     func setupConstraints() {
         userImageView.translatesAutoresizingMaskIntoConstraints = false
-        userImageView.backgroundColor = .blue
-        addSubview(userImageView)
-        addSubview(userName)
+        userImageView.backgroundColor = .red
+        insertSubview((userImageView), at: 0)
+        insertSubview((userName), at: 0)
+//        addSubview(userImageView)
+//        addSubview(userName)
         
         // userImageView constraints
         userImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
