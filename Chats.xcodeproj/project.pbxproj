@@ -16,6 +16,9 @@
 		F005739F23C2715F00D1393C /* Constraints + Enxtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F005739E23C2715F00D1393C /* Constraints + Enxtension.swift */; };
 		F00573A123C281FD00D1393C /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00573A023C281FD00D1393C /* SignUpViewController.swift */; };
 		F035097523CCB6870023D011 /* users.json in Resources */ = {isa = PBXBuildFile; fileRef = F035097423CCB6860023D011 /* users.json */; };
+		F069599E23D4F83F002DAB6A /* ChatRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F069599D23D4F83F002DAB6A /* ChatRequestViewController.swift */; };
+		F06959A023D51542002DAB6A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F069599F23D51542002DAB6A /* ProfileViewController.swift */; };
+		F06959A223D51972002DAB6A /* InsetableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06959A123D51972002DAB6A /* InsetableTextField.swift */; };
 		F075D19823C35A2400FDF888 /* UIFont + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F075D19723C35A2400FDF888 /* UIFont + Extension.swift */; };
 		F075D19A23C35C4300FDF888 /* UISegmentedControl + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F075D19923C35C4300FDF888 /* UISegmentedControl + Extension.swift */; };
 		F075D19C23C361DA00FDF888 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F075D19B23C361DA00FDF888 /* UIColor + Extension.swift */; };
@@ -56,6 +59,9 @@
 		F005739E23C2715F00D1393C /* Constraints + Enxtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constraints + Enxtension.swift"; sourceTree = "<group>"; };
 		F00573A023C281FD00D1393C /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		F035097423CCB6860023D011 /* users.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = users.json; sourceTree = "<group>"; };
+		F069599D23D4F83F002DAB6A /* ChatRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestViewController.swift; sourceTree = "<group>"; };
+		F069599F23D51542002DAB6A /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		F06959A123D51972002DAB6A /* InsetableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetableTextField.swift; sourceTree = "<group>"; };
 		F075D19723C35A2400FDF888 /* UIFont + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont + Extension.swift"; sourceTree = "<group>"; };
 		F075D19923C35C4300FDF888 /* UISegmentedControl + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl + Extension.swift"; sourceTree = "<group>"; };
 		F075D19B23C361DA00FDF888 /* UIColor + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
@@ -120,6 +126,7 @@
 			children = (
 				F005739323C25F3A00D1393C /* ButtonFormView.swift */,
 				F0E8347423C29703005D15C8 /* OneLineTextField.swift */,
+				F06959A123D51972002DAB6A /* InsetableTextField.swift */,
 				F0E8347A23C2B8E9005D15C8 /* AddPhotoView.swift */,
 				F0F6B88123C52455007B7B48 /* GradientView.swift */,
 				F0D2D27B23C69DF500C00476 /* Bundle-Decodable.swift */,
@@ -194,6 +201,8 @@
 			children = (
 				F0906A4523C8CF80004A5E8C /* PeopleViewController.swift */,
 				F0F6B87C23C4F978007B7B48 /* ListViewController.swift */,
+				F069599D23D4F83F002DAB6A /* ChatRequestViewController.swift */,
+				F069599F23D51542002DAB6A /* ProfileViewController.swift */,
 				F0D2D27E23C69ECC00C00476 /* Cell */,
 				F0906A4223C6B8EF004A5E8C /* Header */,
 			);
@@ -379,12 +388,15 @@
 				F0D2D27C23C69DF500C00476 /* Bundle-Decodable.swift in Sources */,
 				F0F6B88223C52455007B7B48 /* GradientView.swift in Sources */,
 				F075D19A23C35C4300FDF888 /* UISegmentedControl + Extension.swift in Sources */,
+				F06959A223D51972002DAB6A /* InsetableTextField.swift in Sources */,
+				F06959A023D51542002DAB6A /* ProfileViewController.swift in Sources */,
 				F0906A4123C6B8EA004A5E8C /* SectionHeader.swift in Sources */,
 				F005739D23C268FD00D1393C /* UIImageView + Extension.swift in Sources */,
 				F0C4AD5D23C249D400879FEB /* AuthViewController.swift in Sources */,
 				F0F6B87D23C4F978007B7B48 /* ListViewController.swift in Sources */,
 				F0C4AD4023BF782600879FEB /* AppDelegate.swift in Sources */,
 				F005739923C267CD00D1393C /* UILabel + Extension.swift in Sources */,
+				F069599E23D4F83F002DAB6A /* ChatRequestViewController.swift in Sources */,
 				F005739723C2662000D1393C /* UIStackView + Extension.swift in Sources */,
 				F0D2D28623C69F4E00C00476 /* MSection.swift in Sources */,
 				F005739423C25F3A00D1393C /* ButtonFormView.swift in Sources */,

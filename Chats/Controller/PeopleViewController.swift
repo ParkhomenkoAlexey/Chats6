@@ -53,6 +53,8 @@ class PeopleViewController: UIViewController {
         collectionView.register(UserCell.self, forCellWithReuseIdentifier: UserCell.reuseId)
         
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.reuseId)
+        
+        collectionView.delegate = self
     }
     
     // MARK: - Manage the data in UICV
@@ -151,6 +153,15 @@ extension PeopleViewController {
     }
 }
 
+extension PeopleViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath)
+        let profileVC = ProfileViewController()
+        present(profileVC, animated: true, completion: nil)
+    }
+}
+
+// MARK: - UISearchBarDelegate
 extension PeopleViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         reloadData(with: searchText)
