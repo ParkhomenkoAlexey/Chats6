@@ -153,6 +153,7 @@ extension PeopleViewController {
     }
 }
 
+// MARK: - UICollectionViewDelegate
 extension PeopleViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath)

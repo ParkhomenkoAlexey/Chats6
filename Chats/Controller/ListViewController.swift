@@ -47,6 +47,8 @@ class ListViewController: UIViewController {
         collectionView.register(ActiveChatCell.self, forCellWithReuseIdentifier: ActiveChatCell.reuseId)
         collectionView.register(WaitingChatCell.self, forCellWithReuseIdentifier: WaitingChatCell.reuseId)
         
+        collectionView.delegate = self
+        
         createDataSource()
         reloadData()
     }
@@ -176,7 +178,24 @@ class ListViewController: UIViewController {
     }
 }
 
-// MARK: UISearchBarDelegate
+// MARK: - UICollectionViewDelegate
+extension ListViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let chat = self.dataSource?.itemIdentifier(for: indexPath) else { return }
+        let section = sections[indexPath.section]
+        switch section.type {
+        case "waitingChats":
+            print(chat.friendName)
+        default:
+            print(chat.lastMessage)
+            let currentUser = UsersController.MUser(username: "Me", avatarStringURL: "human3", sex: "male")
+            let vc = ChatViewController(user: currentUser, chat: chat)
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
+// MARK: - UISearchBarDelegate
 extension ListViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
