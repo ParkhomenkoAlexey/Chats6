@@ -27,6 +27,13 @@ class ProfileViewController: UIViewController {
     
     func customizeElements() {
         aboutMeLabel.numberOfLines = 0
+        if let button = myTextField.rightView as? UIButton {
+            button.addTarget(self, action: #selector(sendMessage), for: .touchUpInside)
+        }
+    }
+    
+    @objc func sendMessage() {
+        print(#function)
     }
 }
 
