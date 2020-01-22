@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import GoogleSignIn
 
 class LoginViewController: UIViewController {
     
@@ -34,8 +35,18 @@ class LoginViewController: UIViewController {
         view.backgroundColor = .white
         setupConstraints()
         
+        googleButton.addTarget(self, action: #selector(googleButtonPressed), for: .touchUpInside)
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(signUpButtonPressed), for: .touchUpInside)
+    }
+}
+
+// MARK: objc button func
+extension LoginViewController {
+    
+    @objc func googleButtonPressed() {
+        GIDSignIn.sharedInstance()?.presentingViewController = self
+        GIDSignIn.sharedInstance()?.signIn()
     }
     
     @objc func loginButtonPressed() {

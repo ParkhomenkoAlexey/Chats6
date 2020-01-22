@@ -9,6 +9,9 @@
 import Foundation
 import UIKit
 import SwiftUI
+import GoogleSignIn
+import FirebaseAuth
+import Firebase
 
 class AuthViewController: UIViewController {
     
@@ -22,8 +25,8 @@ class AuthViewController: UIViewController {
     let emailButton = UIButton(title: "Email", titleColor: .white, backgroundColor: .buttonDark(), cornerRadius: 4)
     let loginButton = UIButton(title: "Login", titleColor: .buttonRed(), backgroundColor: .white, isShadow: true, cornerRadius: 4)
     
-    var loginVC: LoginViewController!
-    var signUpVC: SignUpViewController!
+    var loginVC = LoginViewController()
+    var signUpVC = SignUpViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,17 +34,23 @@ class AuthViewController: UIViewController {
         view.backgroundColor = .white
         setupConstraints()
         
+        
+        googleButton.addTarget(self, action: #selector(googleButtonTapped), for: .touchUpInside)
         emailButton.addTarget(self, action: #selector(toSignUpVC), for: .touchUpInside)
         loginButton.addTarget(self, action: #selector(toLoginVC), for: .touchUpInside)
         
-        loginVC = LoginViewController()
-        signUpVC = SignUpViewController()
+        GIDSignIn.sharedInstance()?.delegate = self
         signUpVC.delegate = self
         loginVC.delegate = self
     }
 
+    @objc func googleButtonTapped() {
+        GIDSignIn.sharedInstance()?.presentingViewController = self
+        GIDSignIn.sharedInstance()?.signIn()
+    }
 }
 
+// MARK: - AuthNavigation
 extension AuthViewController: AuthNavigation {
     @objc func toLoginVC() {
         present(loginVC, animated: true, completion: nil)
@@ -71,6 +80,22 @@ extension AuthViewController {
         stackView.topAnchor.constraint(equalTo: logoImageView.topAnchor, constant: 160).isActive = true
         stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40).isActive = true
         stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
+    }
+}
+
+// MARK: - GIDSignInDelegate
+extension AuthViewController: GIDSignInDelegate {
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        AuthService.shared.googleLogin(user: user, error: error) { (result) in
+            switch result {
+            case .success:
+                UIApplication.getTopViewController()?.showAlert(with: "Успешно", and: "Вы зарегистрированы!", completion: {
+                    UIApplication.getTopViewController()?.present(SetupProfileViewController(), animated: true, completion: nil)
+                })
+            case .failure(let error):
+                self.showAlert(with: "Ошибка", and: error.localizedDescription)
+            }
+        }
     }
 }
 

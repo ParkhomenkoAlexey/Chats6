@@ -41,6 +41,10 @@ class SignUpViewController: UIViewController  {
         signUpButton.addTarget(self, action: #selector(signUpButtonPressed), for: .touchUpInside)
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
     }
+}
+
+// MARK: objc button func
+extension SignUpViewController {
     
     @objc func signUpButtonPressed() {
         AuthService.shared.register(email: emailTextField.text,
