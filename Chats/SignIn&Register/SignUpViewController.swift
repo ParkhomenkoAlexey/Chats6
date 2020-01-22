@@ -10,7 +10,12 @@ import Foundation
 import UIKit
 import SwiftUI
 
-class SignUpViewController: UIViewController {
+protocol AuthNavigation: class {
+    func toLoginVC()
+    func toSignUpVC()
+}
+
+class SignUpViewController: UIViewController  {
     
     let welcomeLabel = UILabel(text: "Good to see you!", font: UIFont.init(name: "avenir", size: 26))
     
@@ -26,10 +31,26 @@ class SignUpViewController: UIViewController {
     let signUpButton = UIButton(title: "Sign Up", titleColor: .white, backgroundColor: .buttonDark(), cornerRadius: 4)
     let loginButton = UIButton(title: "  Login", titleColor: .buttonRed())
     
+    weak var delegate: AuthNavigation?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupConstraints()
+        
+        signUpButton.addTarget(self, action: #selector(signUpButtonPressed), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
+    }
+    
+    @objc func signUpButtonPressed() {
+        let setupProfileVC = SetupProfileViewController()
+        present(setupProfileVC, animated: true, completion: nil)
+    }
+    
+    @objc func loginButtonPressed() {
+        self.dismiss(animated: true) { [delegate] in
+            delegate?.toLoginVC()
+        }
     }
 }
 

@@ -22,11 +22,33 @@ class AuthViewController: UIViewController {
     let emailButton = UIButton(title: "Email", titleColor: .white, backgroundColor: .buttonDark(), cornerRadius: 4)
     let loginButton = UIButton(title: "Login", titleColor: .buttonRed(), backgroundColor: .white, isShadow: true, cornerRadius: 4)
     
+    var loginVC: LoginViewController!
+    var signUpVC: SignUpViewController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         setupConstraints()
+        
+        emailButton.addTarget(self, action: #selector(toSignUpVC), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(toLoginVC), for: .touchUpInside)
+        
+        loginVC = LoginViewController()
+        signUpVC = SignUpViewController()
+        signUpVC.delegate = self
+        loginVC.delegate = self
+    }
+
+}
+
+extension AuthViewController: AuthNavigation {
+    @objc func toLoginVC() {
+        present(loginVC, animated: true, completion: nil)
+    }
+    
+    @objc func toSignUpVC() {
+        present(signUpVC, animated: true, completion: nil)
     }
 }
 

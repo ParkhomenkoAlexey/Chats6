@@ -27,10 +27,27 @@ class LoginViewController: UIViewController {
     let loginButton = UIButton(title: "Login", titleColor: .white, backgroundColor: .buttonDark(), cornerRadius: 4)
     let signUpButton = UIButton(title: "  Sign Up", titleColor: .buttonRed())
     
+    weak var delegate: AuthNavigation?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupConstraints()
+        
+        loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
+        signUpButton.addTarget(self, action: #selector(signUpButtonPressed), for: .touchUpInside)
+    }
+    
+    @objc func loginButtonPressed() {
+        let mainTabBar = MainTabBarController()
+        mainTabBar.modalPresentationStyle = .fullScreen
+        present(mainTabBar, animated: true, completion: nil)
+    }
+    
+    @objc func signUpButtonPressed() {
+        self.dismiss(animated: true) { [delegate] in
+            delegate?.toSignUpVC()
+        }
     }
 }
 

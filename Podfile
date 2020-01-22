@@ -6,6 +6,9 @@ target 'Chats' do
   use_frameworks!
 
   # Pods for Chats
+
+pod 'Firebase/Analytics'
+pod 'Firebase/Auth'
 pod 'GoogleSignIn'
 pod 'MessageKit'
 
