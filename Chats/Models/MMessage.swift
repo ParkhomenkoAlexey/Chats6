@@ -25,7 +25,7 @@ struct MMessage: Hashable, MessageType {
     }
     
     init(user: UsersController.MUser, content: String) {
-        sender = Sender(senderId: user.identifier.uuidString, displayName: user.username)
+        sender = Sender(senderId: user.identifier, displayName: user.username)
         self.content = content
         sentDate = Date()
     }

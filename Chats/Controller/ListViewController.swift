@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FirebaseAuth
 
 class ListViewController: UIViewController {
     
@@ -21,6 +22,21 @@ class ListViewController: UIViewController {
         
         setupSearchBar()
         setupCollectionView()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(signOut))
+    }
+    
+    @objc private func signOut() {
+      let ac = UIAlertController(title: nil, message: "Are you sure you want to sign out?", preferredStyle: .alert)
+      ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+      ac.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { _ in
+        do {
+          try Auth.auth().signOut()
+        } catch {
+          print("Error signing out: \(error.localizedDescription)")
+        }
+      }))
+      present(ac, animated: true, completion: nil)
     }
     
     // MARK: Setup UI Elements
@@ -188,8 +204,11 @@ extension ListViewController: UICollectionViewDelegate {
             print(chat.friendName)
         default:
             print(chat.lastMessage)
-            let currentUser = UsersController.MUser(username: "Me", avatarStringURL: "human3", sex: "male")
-//            let vc = ChatViewController(user: currentUser, chat: chat)
+            let currentUser = UsersController.MUser(username: "Me",
+                                                    avatarStringURL: "human3",
+                                                    email: "gtgt",
+                                                    description: "3232",
+                                                    sex: "male")
             let chatsVC = ChatsViewController(user: currentUser, chat: chat)
             navigationController?.pushViewController(chatsVC, animated: true)
         }

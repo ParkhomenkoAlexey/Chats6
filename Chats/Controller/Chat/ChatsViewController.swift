@@ -75,7 +75,7 @@ struct ChatsProvider: PreviewProvider {
     struct ContainterView: UIViewControllerRepresentable {
         
         let chatsVC: ChatsViewController = ChatsViewController(
-        user: UsersController.MUser(username: "Abla", avatarStringURL: "human1", sex: "male"),
+            user: UsersController.MUser(username: "Abla",avatarStringURL: "human1", email: "3232", description: "3232", sex: "male"),
         chat: MChat(friendName: "Bobik", friendImage: "human2", lastMessage: "Sorry!"))
         func makeUIViewController(context: UIViewControllerRepresentableContext<ChatsProvider.ContainterView>) -> ChatsViewController {
             return chatsVC

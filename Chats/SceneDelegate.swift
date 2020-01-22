@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -15,14 +16,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
+
+//        if Auth.auth().currentUser != nil {
+//            window?.rootViewController = MainTabBarController()
+//        } else {
+            window?.rootViewController = AuthViewController()
+//        }
         
-        window?.rootViewController = AuthViewController()
+        // не следим за состоянием авторизации, так как после регистрации не факт что пользователь сразу попадет на MainTabBarController(), возможно, его профиль будет заполнен не до конца
+        
+//        _ = Auth.auth().addStateDidChangeListener { auth, user in
+//
+//            if user != nil {
+//                self.window?.rootViewController = MainTabBarController()
+//            } else {
+//                self.window?.rootViewController = AuthViewController()
+//            }
+//        }
+
+        
         window?.makeKeyAndVisible()
     }
 

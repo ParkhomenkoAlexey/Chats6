@@ -11,9 +11,33 @@ import UIKit
 class UsersController {
     struct MUser: Decodable, Hashable {
         var username: String
+        var email: String
         var avatarStringURL: String
+        var description: String
         var sex: String
-        let identifier = UUID()
+        var identifier: String
+        
+        init(username: String, avatarStringURL: String,
+             email: String, description: String,
+             sex: String, identifier: String = UUID().uuidString) {
+            self.username = username
+            self.email = email
+            self.avatarStringURL = avatarStringURL
+            self.description = description
+            self.sex = sex
+            self.identifier = identifier
+        }
+        
+        var representation: [String : Any] {
+            var rep = ["username": username]
+            rep["sex"] = sex
+            rep["avatarStringURL"] = avatarStringURL
+            rep["description"] = description
+            rep["sex"] = sex
+            rep["uid"] = identifier
+            return rep
+        }
+        
         func hash(into hasher: inout Hasher) {
             hasher.combine(identifier)
         }

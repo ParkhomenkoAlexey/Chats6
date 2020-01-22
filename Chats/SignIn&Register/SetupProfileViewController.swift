@@ -33,9 +33,34 @@ class SetupProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupConstraints()
+        
+        goToChatsButton.addTarget(self, action: #selector(goToChatsButtonTapped), for: .touchUpInside)
+        fullImageView.plusButton.addTarget(self, action: #selector(addPhotoTapped), for: .touchUpInside)
     }
     
-
+    @objc func goToChatsButtonTapped() {
+        FirestoreService.shared.saveProfileWith(
+            username: fullNameTextField.text,
+            avatarImage: fullImageView.circleImageView.image,
+            description: aboutMeTextField.text,
+            sex: sexSegmentedControl.titleForSegment(at: sexSegmentedControl.selectedSegmentIndex)) { (result) in
+                switch result {
+                case .success:
+                    self.showAlert(with: "Успешно", and: "Данные сохранены!", completion: {
+                        print("hello")
+                    })
+                case .failure(let error):
+                    self.showAlert(with: "Ошибка", and: error.localizedDescription)
+                }
+        }
+    }
+    
+    @objc func addPhotoTapped() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.sourceType = .photoLibrary
+        present(imagePickerController, animated: true, completion: nil)
+    }
 }
 
 // MARK: - Setup Constraints
@@ -59,12 +84,10 @@ extension SetupProfileViewController {
                                 axis: .vertical, spacing: 40)
         
         signUpButton.contentHorizontalAlignment = .leading
-        let bottomStackView = UIStackView(arrangedSubviews: [needAnAccountLabel, signUpButton], axis: .horizontal, spacing: -1) // чит, с нулем не работает
         
         view.addSubview(welcomeLabel)
         view.addSubview(fullImageView)
         view.addSubview(stackView)
-        view.addSubview(bottomStackView)
         
         welcomeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 160).isActive = true
         welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -76,11 +99,20 @@ extension SetupProfileViewController {
         stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40).isActive = true
         stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
         
-        bottomStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -60).isActive = true
-        bottomStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40).isActive = true
-        bottomStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
     }
 }
+
+// MARK: - UIImagePickerControllerDelegate
+extension SetupProfileViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
+            return
+        }
+        fullImageView.circleImageView.image = image
+    }
+}
+
 
 // MARK: - SwiftUI
 struct SetupProfileVCProvider: PreviewProvider {
