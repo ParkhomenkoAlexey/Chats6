@@ -189,8 +189,9 @@ extension ListViewController: UICollectionViewDelegate {
         default:
             print(chat.lastMessage)
             let currentUser = UsersController.MUser(username: "Me", avatarStringURL: "human3", sex: "male")
-            let vc = ChatViewController(user: currentUser, chat: chat)
-            navigationController?.pushViewController(vc, animated: true)
+//            let vc = ChatViewController(user: currentUser, chat: chat)
+            let chatsVC = ChatsViewController(user: currentUser, chat: chat)
+            navigationController?.pushViewController(chatsVC, animated: true)
         }
     }
 }

@@ -44,7 +44,7 @@ extension UIButton {
     }
 }
 
-extension UIButton {
+extension UIView {
     
     func applyGradients(cornerRadius: CGFloat) {
         self.backgroundColor = nil

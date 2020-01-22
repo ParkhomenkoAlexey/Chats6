@@ -7,5 +7,6 @@ target 'Chats' do
 
   # Pods for Chats
 pod 'GoogleSignIn'
+pod 'MessageKit'
 
 end

@@ -8,11 +8,27 @@
 
 import Foundation
 import UIKit
+import MessageKit
 
-struct MMessage: Decodable, Hashable {
-    let content: String
-    let senderName: String
+struct MMessage: Hashable, MessageType {
     
+    let content: String
+    var sentDate: Date
+    var sender: SenderType
+    
+    var messageId: String {
+        return identifier.uuidString
+    }
+    
+    var kind: MessageKind {
+        return .text(content)
+    }
+    
+    init(user: UsersController.MUser, content: String) {
+        sender = Sender(senderId: user.identifier.uuidString, displayName: user.username)
+        self.content = content
+        sentDate = Date()
+    }
     
     let identifier = UUID()
     func hash(into hasher: inout Hasher) {
