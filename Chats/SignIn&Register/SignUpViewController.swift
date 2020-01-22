@@ -43,8 +43,18 @@ class SignUpViewController: UIViewController  {
     }
     
     @objc func signUpButtonPressed() {
-        let setupProfileVC = SetupProfileViewController()
-        present(setupProfileVC, animated: true, completion: nil)
+        AuthService.shared.register(email: emailTextField.text,
+                                    password: passwordTextField.text,
+                                    confirmPassword: confirmPasswordTextField.text) { (result) in
+            switch result {
+            case .success:
+                self.showAlert(with: "Успешно", and: "Вы зарегистрированы!", completion: {
+                    self.present(SetupProfileViewController(), animated: true, completion: nil)
+                })
+            case .failure(let error):
+                self.showAlert(with: "Ошибка", and: error.localizedDescription)
+            }
+        }
     }
     
     @objc func loginButtonPressed() {

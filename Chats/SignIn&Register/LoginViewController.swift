@@ -39,9 +39,18 @@ class LoginViewController: UIViewController {
     }
     
     @objc func loginButtonPressed() {
-        let mainTabBar = MainTabBarController()
-        mainTabBar.modalPresentationStyle = .fullScreen
-        present(mainTabBar, animated: true, completion: nil)
+        AuthService.shared.login(email: emailTextField.text, password: passwordTextField.text) { (result) in
+            switch result {
+            case .success:
+                self.showAlert(with: "Успешно", and: "Вы авторизированны!", completion: {
+                    let mainTabBar = MainTabBarController()
+                    mainTabBar.modalPresentationStyle = .fullScreen
+                    self.present(mainTabBar, animated: true, completion: nil)
+                })
+            case .failure(let error):
+                self.showAlert(with: "Ошибка", and: error.localizedDescription)
+            }
+        }
     }
     
     @objc func signUpButtonPressed() {
