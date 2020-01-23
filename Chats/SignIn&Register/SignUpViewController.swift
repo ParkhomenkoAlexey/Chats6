@@ -10,11 +10,6 @@ import Foundation
 import UIKit
 import SwiftUI
 
-protocol AuthNavigation: class {
-    func toLoginVC()
-    func toSignUpVC()
-}
-
 class SignUpViewController: UIViewController  {
     
     let welcomeLabel = UILabel(text: "Good to see you!", font: UIFont.init(name: "avenir", size: 26))
