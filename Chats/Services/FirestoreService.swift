@@ -77,22 +77,31 @@ class FirestoreService {
     } // getUserData
     
     private var reference: CollectionReference?
+    private var messagesRef: CollectionReference?
     func sendInviteWith(message: String, sender: MUser, receiver: MUser, completion: @escaping (Result<Void, Error>) -> Void) {
-        var waitingChat = ["username": sender.username]
-        waitingChat["avatarStringURL"] = sender.avatarStringURL
-        waitingChat["uid"] = sender.identifier
-        waitingChat["invitationMessage"] = message
+        
+        let message = MMessage(user: sender, content: message)
+        let chat = MChat(friendUsername: sender.username,
+                         friendAvatarStringURL: sender.avatarStringURL,
+                         friendIdentifier: sender.identifier, lastMessageContent: message.content)
         
         reference = db.collection(["users", receiver.identifier, "waitingChats"].joined(separator: "/"))
-
-        reference?.document(sender.identifier).setData(waitingChat, completion: { (error) in
+        reference?.document(sender.identifier).setData(chat.representation, completion: { (error) in
             if let error = error {
               completion(.failure(error))
               return
             }
-
-              completion(.success(Void()))
+            self.messagesRef = self.db.collection(["users", receiver.identifier, "waitingChats", sender.identifier, "messages"].joined(separator: "/"))
+            self.messagesRef?.addDocument(data: message.representation, completion: { (error) in
+                if let error = error {
+                  completion(.failure(error))
+                  return
+                }
+                completion(.success(Void()))
+            })
         })
+        
+        messagesRef = db.collection(["users", receiver.identifier, "waitingChats"].joined(separator: "/"))
     }
     
 //    func getUsers(completion: @escaping (Result<[MUser], Error>) -> Void) {

@@ -10,5 +10,5 @@ import Foundation
 
 protocol SelfConfiguringCell {
     static var reuseId: String { get }
-    func configure<U: Decodable>(with value: U)
+    func configure<U: Hashable>(with value: U)
 }

@@ -12,7 +12,21 @@ import FirebaseAuth
 
 class ListViewController: UIViewController {
     
-    let sections = Bundle.main.decode([MSection].self, from: "chats.json")
+//    let sections = Bundle.main.decode([MSection].self, from: "chats.json")
+    let sections = [MSection]()
+    
+    enum Section: Int, CaseIterable {
+        case waitingChats, activeChats
+        
+        func description() -> String {
+            switch self {
+            case .waitingChats:
+                return "Waiting chats"
+            case .activeChats:
+                return "Active chats"
+            }
+        }
+    }
     
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<MSection, MChat>?
@@ -72,7 +86,7 @@ class ListViewController: UIViewController {
     
     // MARK: - Manage the data in UICV
     
-    func configure<T: SelfConfiguringCell, U: Decodable>(cellType: T.Type, with value: U, for indexPath: IndexPath) -> T {
+    func configure<T: SelfConfiguringCell, U: Hashable>(cellType: T.Type, with value: U, for indexPath: IndexPath) -> T {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.reuseId, for: indexPath) as? T else { fatalError("Unable to dequeue \(cellType)") }
         cell.configure(with: value)
         return cell
@@ -202,9 +216,9 @@ extension ListViewController: UICollectionViewDelegate {
         let section = sections[indexPath.section]
         switch section.type {
         case "waitingChats":
-            print(chat.friendName)
+            print(chat.friendUsername)
         default:
-            print(chat.lastMessage)
+            print(chat.lastMessageContent)
             let currentUser = MUser(username: "Me",
                                     avatarStringURL: "human3",
                                     email: "gtgt",

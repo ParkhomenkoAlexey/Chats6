@@ -28,11 +28,12 @@ class ActiveChatCell: UICollectionViewCell, SelfConfiguringCell {
         self.clipsToBounds = true
     }
     
-    func configure<U>(with value: U) where U : Decodable {
+    func configure<U>(with value: U) where U : Hashable {
         guard let chat: MChat = value as? MChat else { return }
-        friendName.text = chat.friendName
-        lastMessage.text = chat.lastMessage
-        friendImageView.image = UIImage(named: chat.friendImage)
+        friendName.text = chat.friendUsername
+        lastMessage.text = chat.lastMessageContent
+        guard let url = URL(string: chat.friendAvatarStringURL) else { return }
+        friendImageView.sd_setImage(with: url, completed: nil)
     }
 
     required init?(coder: NSCoder) {

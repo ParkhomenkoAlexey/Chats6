@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct MSection: Decodable, Hashable {
+struct MSection: Hashable {
     let type: String
     let title: String
     let items: [MChat]

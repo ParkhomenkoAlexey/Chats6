@@ -15,9 +15,10 @@ struct MMessage: Hashable, MessageType {
     let content: String
     var sentDate: Date
     var sender: SenderType
+    let id: String?
     
     var messageId: String {
-        return identifier.uuidString
+        return id ?? UUID().uuidString
     }
     
     var kind: MessageKind {
@@ -28,14 +29,25 @@ struct MMessage: Hashable, MessageType {
         sender = Sender(senderId: user.identifier, displayName: user.username)
         self.content = content
         sentDate = Date()
+        id = nil
     }
     
-    let identifier = UUID()
+    var representation: [String : Any] {
+        let rep: [String : Any] = [
+          "created": sentDate,
+          "senderID": sender.senderId,
+          "senderName": sender.displayName,
+          "content": content
+        ]
+        return rep
+    }
+
+    
     func hash(into hasher: inout Hasher) {
-        hasher.combine(identifier)
+        hasher.combine(messageId)
     }
     
     static func == (lhs: MMessage, rhs: MMessage) -> Bool {
-        return lhs.identifier == rhs.identifier
+        return lhs.messageId == rhs.messageId
     }
 }

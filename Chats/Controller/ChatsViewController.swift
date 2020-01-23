@@ -20,7 +20,7 @@ class ChatsViewController: MessagesViewController {
         self.chat = chat
         super.init(nibName: nil, bundle: nil)
         
-        title = chat.friendName
+        title = chat.friendUsername
     }
     
     required init?(coder: NSCoder) {
@@ -76,7 +76,7 @@ struct ChatsProvider: PreviewProvider {
         
         let chatsVC: ChatsViewController = ChatsViewController(
             user: MUser(username: "Abla",avatarStringURL: "human1", email: "3232", description: "3232", sex: "male"),
-        chat: MChat(friendName: "Bobik", friendImage: "human2", lastMessage: "Sorry!"))
+            chat: MChat(friendUsername: "ffrfr", friendAvatarStringURL: "fefe", friendIdentifier: "fefe", lastMessageContent: "fdf"))
         func makeUIViewController(context: UIViewControllerRepresentableContext<ChatsProvider.ContainterView>) -> ChatsViewController {
             return chatsVC
         }

@@ -93,7 +93,7 @@ class PeopleViewController: UIViewController {
     }
 
     
-    func configure<T: SelfConfiguringCell, U: Decodable>(cellType: T.Type, with value: U, for indexPath: IndexPath) -> T {
+    func configure<T: SelfConfiguringCell, U: Hashable>(cellType: T.Type, with value: U, for indexPath: IndexPath) -> T {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.reuseId, for: indexPath) as? T else { fatalError("Unable to dequeue \(cellType)") }
         cell.configure(with: value)
         return cell
