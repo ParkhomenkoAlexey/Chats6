@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import FirebaseFirestore
+
 class UsersController {
     struct MUser: Decodable, Hashable {
         var username: String
@@ -28,9 +30,28 @@ class UsersController {
             self.identifier = identifier
         }
         
+        init?(document: DocumentSnapshot) {
+            guard let data = document.data() else { return nil }
+            guard let username = data["username"] as? String,
+                let email = data["email"] as? String,
+                let avatarStringURL = data["avatarStringURL"] as? String,
+                let description = data["description"] as? String,
+                let sex = data["sex"] as? String,
+                let identifier = data["uid"] as? String else {
+                    return nil
+            }
+            self.username = username
+            self.email = email
+            self.avatarStringURL = avatarStringURL
+            self.description = description
+            self.sex = sex
+            self.identifier = identifier
+        }
+        
         var representation: [String : Any] {
             var rep = ["username": username]
             rep["sex"] = sex
+            rep["email"] = email
             rep["avatarStringURL"] = avatarStringURL
             rep["description"] = description
             rep["sex"] = sex

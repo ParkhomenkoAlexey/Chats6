@@ -41,7 +41,7 @@ class LoginViewController: UIViewController {
     }
 }
 
-// MARK: objc button func
+// MARK: - Actions
 extension LoginViewController {
     
     @objc func googleButtonPressed() {
@@ -52,11 +52,18 @@ extension LoginViewController {
     @objc func loginButtonPressed() {
         AuthService.shared.login(email: emailTextField.text, password: passwordTextField.text) { (result) in
             switch result {
-            case .success:
+            case .success(let user):
                 self.showAlert(with: "Успешно", and: "Вы авторизированны!", completion: {
-                    let mainTabBar = MainTabBarController()
-                    mainTabBar.modalPresentationStyle = .fullScreen
-                    self.present(mainTabBar, animated: true, completion: nil)
+                    FirestoreService.shared.getUserData(user: user) { (result) in
+                        switch result {
+                        case .success(let muser):
+                            let mainTabBar = MainTabBarController(currentUser: muser)
+                            mainTabBar.modalPresentationStyle = .fullScreen
+                            self.present(mainTabBar, animated: true, completion: nil)
+                        case .failure(_):
+                            self.present(SetupProfileViewController(currentUser: user), animated: true, completion: nil)
+                        }
+                    }
                 })
             case .failure(let error):
                 self.showAlert(with: "Ошибка", and: error.localizedDescription)

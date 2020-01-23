@@ -16,10 +16,9 @@ class FirestoreService {
     static let shared = FirestoreService()
     private let auth = Auth.auth()
     
-    let db = Firestore.firestore()
-    var ref: DocumentReference? = nil
+    let usersRef = Firestore.firestore().collection("users")
     
-    func saveProfileWith(username: String?, avatarImage: UIImage?, description: String?, sex: String?, completion: @escaping (Result<Void, Error>) -> Void) {
+    func saveProfileWith(id: String?, email: String?, username: String?, avatarImage: UIImage?, description: String?, sex: String?, completion: @escaping (Result<UsersController.MUser, Error>) -> Void) {
         
         guard Validators.isFilled(username: username, description: description, sex: sex) else {
             completion(.failure(UserError.notFilled))
@@ -31,26 +30,44 @@ class FirestoreService {
             return
         }
         
-        completion(.success(Void()))
-        
-        let userId = auth.currentUser?.uid
-        let userEmail = auth.currentUser?.email
-        let user = UsersController.MUser.init(username: username!,
+        var muser = UsersController.MUser.init(username: username!,
                                               avatarStringURL: "not exist",
-                                              email: userEmail!,
+                                              email: email!,
                                               description: description!,
                                               sex: sex!,
-                                              identifier: userId!)
-        ref = db.collection("users").addDocument(data: user.representation) { (error) in
-            if let err = error {
-                print("Error adding document: \(err)")
+                                              identifier: id!)
+        
+        StorageService.shared.upload(photo: avatarImage!) { (result) in
+            switch result {
+            case .success(let url):
+                muser.avatarStringURL = url.absoluteString
+                self.usersRef.document(muser.identifier).setData(muser.representation) { (error) in
+                    if let err = error {
+                        completion(.failure(err))
+                    } else {
+                        completion(.success(muser))
+                    }
+                }
+                
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        } // StorageService
+    } // saveProfileWith
+    
+    func getUserData(user: User, completion: @escaping (Result<UsersController.MUser, Error>) -> Void) {
+        let docRef = Firestore.firestore().collection("users").document(user.uid)
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                
+                guard let muser = UsersController.MUser(document: document) else {
+                    completion(.failure(UserError.cantUnwrapToMUser))
+                  return
+                }
+                completion(.success(muser))
             } else {
-                print("Document added with ID: \(self.ref!.documentID)")
+                completion(.failure(UserError.cantGetUserInfo))
             }
         }
-    }
-    
-    func getUserData() {
-        
-    }
+    } // getUserData
 }

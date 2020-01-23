@@ -7,11 +7,13 @@ target 'Chats' do
 
   # Pods for Chats
 
+pod 'Firebase/Firestore'
 pod 'Firebase/Analytics'
 pod 'Firebase/Auth'
 pod 'Firebase/Core'
-pod 'Firebase/Firestore'
 pod 'GoogleSignIn'
 pod 'MessageKit'
+pod 'Firebase/Storage'
+
 
 end

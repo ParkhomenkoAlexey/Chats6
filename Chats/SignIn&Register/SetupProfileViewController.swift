@@ -8,7 +8,8 @@
 
 import Foundation
 import UIKit
-import SwiftUI
+import FirebaseAuth
+import FirebaseFirestore
 
 class SetupProfileViewController: UIViewController {
     
@@ -29,6 +30,24 @@ class SetupProfileViewController: UIViewController {
     
     let signUpButton = UIButton(title: "  Sign Up", titleColor: .buttonRed())
     
+    private let currentUser: User
+    
+    init(currentUser: User) {
+        self.currentUser = currentUser
+        if let username = currentUser.displayName {
+            fullNameTextField.text = username
+        }
+        if let photoURL = currentUser.photoURL {
+            fullImageView.circleImageView.setImage(imageURL: photoURL.absoluteString)
+        }
+        super.init(nibName: nil, bundle: nil)
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -38,16 +57,23 @@ class SetupProfileViewController: UIViewController {
         fullImageView.plusButton.addTarget(self, action: #selector(addPhotoTapped), for: .touchUpInside)
     }
     
+    
+}
+
+// MARK: - Actions
+extension SetupProfileViewController {
     @objc func goToChatsButtonTapped() {
         FirestoreService.shared.saveProfileWith(
-            username: fullNameTextField.text,
+            id: currentUser.uid, email: currentUser.email, username: fullNameTextField.text,
             avatarImage: fullImageView.circleImageView.image,
             description: aboutMeTextField.text,
             sex: sexSegmentedControl.titleForSegment(at: sexSegmentedControl.selectedSegmentIndex)) { (result) in
                 switch result {
-                case .success:
+                case .success(let muser):
                     self.showAlert(with: "Успешно", and: "Данные сохранены!", completion: {
-                        print("hello")
+                        let mainTabBar = MainTabBarController(currentUser: muser)
+                        mainTabBar.modalPresentationStyle = .fullScreen
+                        self.present(mainTabBar, animated: true, completion: nil)
                     })
                 case .failure(let error):
                     self.showAlert(with: "Ошибка", and: error.localizedDescription)
@@ -115,6 +141,7 @@ extension SetupProfileViewController: UINavigationControllerDelegate, UIImagePic
 
 
 // MARK: - SwiftUI
+import SwiftUI
 struct SetupProfileVCProvider: PreviewProvider {
     static var previews: some View {
         ContainterView().edgesIgnoringSafeArea(.all)
@@ -122,7 +149,7 @@ struct SetupProfileVCProvider: PreviewProvider {
     
     struct ContainterView: UIViewControllerRepresentable {
         
-        let SetupProfileVC = SetupProfileViewController()
+        let SetupProfileVC = SetupProfileViewController(currentUser: Auth.auth().currentUser!)
         func makeUIViewController(context: UIViewControllerRepresentableContext<SetupProfileVCProvider.ContainterView>) -> SetupProfileViewController {
             return SetupProfileVC
         }

@@ -13,9 +13,20 @@ import SwiftUI
 
 class MainTabBarController: UITabBarController {
     
+    private let currentUser: UsersController.MUser
+    
+    init(currentUser: UsersController.MUser = UsersController.MUser(username: "dfd", avatarStringURL: "fdf", email: "frgr", description: "frf", sex: "frfr", identifier: "fefe")) {
+        self.currentUser = currentUser
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("#function: \(#function) currentUser.username: \(currentUser.username)")
         view.backgroundColor = .white
         
         let listViewController = ListViewController()

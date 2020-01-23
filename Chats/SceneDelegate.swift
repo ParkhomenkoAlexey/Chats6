@@ -14,30 +14,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
 
-//        if Auth.auth().currentUser != nil {
-//            window?.rootViewController = MainTabBarController()
-//        } else {
+        if let user = Auth.auth().currentUser {
+            FirestoreService.shared.getUserData(user: user) { (result) in
+                switch result {
+                case .success(let muser):
+                    print("#function: \(#function)", muser.username)
+                    self.window?.rootViewController = MainTabBarController()
+                case .failure(let error):
+                    print("#function: \(#function) error: \(error.localizedDescription)")
+                    self.window?.rootViewController = AuthViewController()
+                }
+            }
+            
+        } else {
             window?.rootViewController = AuthViewController()
-//        }
+        }
         
-        // не следим за состоянием авторизации, так как после регистрации не факт что пользователь сразу попадет на MainTabBarController(), возможно, его профиль будет заполнен не до конца
-        
+//         не следим за состоянием авторизации, так как прерываются анимации showAlert
 //        _ = Auth.auth().addStateDidChangeListener { auth, user in
-//
-//            if user != nil {
-//                self.window?.rootViewController = MainTabBarController()
-//            } else {
-//                self.window?.rootViewController = AuthViewController()
-//            }
 //        }
-
-        
         window?.makeKeyAndVisible()
     }
 

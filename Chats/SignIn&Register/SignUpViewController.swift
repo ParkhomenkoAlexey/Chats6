@@ -43,7 +43,7 @@ class SignUpViewController: UIViewController  {
     }
 }
 
-// MARK: objc button func
+// MARK: - Actions
 extension SignUpViewController {
     
     @objc func signUpButtonPressed() {
@@ -51,9 +51,9 @@ extension SignUpViewController {
                                     password: passwordTextField.text,
                                     confirmPassword: confirmPasswordTextField.text) { (result) in
             switch result {
-            case .success:
+            case .success(let user):
                 self.showAlert(with: "Успешно", and: "Вы зарегистрированы!", completion: {
-                    self.present(SetupProfileViewController(), animated: true, completion: nil)
+                    self.present(SetupProfileViewController(currentUser: user), animated: true, completion: nil)
                 })
             case .failure(let error):
                 self.showAlert(with: "Ошибка", and: error.localizedDescription)

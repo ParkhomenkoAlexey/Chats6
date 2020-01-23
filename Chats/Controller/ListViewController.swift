@@ -32,6 +32,7 @@ class ListViewController: UIViewController {
       ac.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { _ in
         do {
           try Auth.auth().signOut()
+            UIApplication.shared.keyWindow?.rootViewController = AuthViewController()
         } catch {
           print("Error signing out: \(error.localizedDescription)")
         }

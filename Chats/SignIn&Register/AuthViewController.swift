@@ -44,13 +44,18 @@ class AuthViewController: UIViewController {
         loginVC.delegate = self
     }
 
+    
+}
+
+// MARK: - Actions
+extension AuthViewController {
     @objc func googleButtonTapped() {
         GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance()?.signIn()
     }
 }
 
-// MARK: - AuthNavigation
+// MARK: - AuthNavigation Protocol
 extension AuthViewController: AuthNavigation {
     @objc func toLoginVC() {
         present(loginVC, animated: true, completion: nil)
@@ -88,10 +93,21 @@ extension AuthViewController: GIDSignInDelegate {
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         AuthService.shared.googleLogin(user: user, error: error) { (result) in
             switch result {
-            case .success:
-                UIApplication.getTopViewController()?.showAlert(with: "Успешно", and: "Вы зарегистрированы!", completion: {
-                    UIApplication.getTopViewController()?.present(SetupProfileViewController(), animated: true, completion: nil)
-                })
+            case .success(let user):
+                FirestoreService.shared.getUserData(user: user) { (result) in
+                    switch result {
+                    case .success(let muser):
+                        UIApplication.getTopViewController()?.showAlert(with: "Успешно", and: "Вы авторизированны!", completion: {
+                            let mainTabBar = MainTabBarController(currentUser: muser)
+                            mainTabBar.modalPresentationStyle = .fullScreen
+                            UIApplication.getTopViewController()?.present(mainTabBar, animated: true, completion: nil)
+                        })
+                    case .failure(_):
+                        UIApplication.getTopViewController()?.showAlert(with: "Успешно", and: "Вы зарегистрированы!", completion: {
+                            UIApplication.getTopViewController()?.present(SetupProfileViewController(currentUser: user), animated: true, completion: nil)
+                        })
+                    }
+                }
             case .failure(let error):
                 self.showAlert(with: "Ошибка", and: error.localizedDescription)
             }
