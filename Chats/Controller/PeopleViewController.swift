@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class PeopleViewController: UIViewController {
     
@@ -20,44 +21,73 @@ class PeopleViewController: UIViewController {
         }
     }
     
-    let usersController = UsersController()
-    var dataSource: UICollectionViewDiffableDataSource<Section, UsersController.MUser>!
+    private var users: [MUser] = []
+    private var userListener: ListenerRegistration?
+    private var userReference: CollectionReference {
+      return Firestore.firestore().collection("users")
+    }
+    
+    var dataSource: UICollectionViewDiffableDataSource<Section, MUser>!
     var collectionView: UICollectionView! = nil
+    var currentSnapshot: NSDiffableDataSourceSnapshot<Section, MUser>! = nil
+    
+    private let currentUser: MUser
+    
+    init(currentUser: MUser = MUser(username: "dfd", avatarStringURL: "fdf", email: "frgr", description: "frf", sex: "frfr", identifier: "fefe")) {
+        self.currentUser = currentUser
+        super.init(nibName: nil, bundle: nil)
+        title = currentUser.username
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupCollectionView()
         setupSearchBar()
         createDataSource()
-        reloadData(with: nil)
-    }
-    
-    // MARK: Setup UI Elements
-    private func setupSearchBar() {
-        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        let searchController = UISearchController(searchResultsController: nil)
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.delegate = self
-    }
-    
-    private func setupCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.addSubview(collectionView)
-        collectionView.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
         
-        collectionView.register(UserCell.self, forCellWithReuseIdentifier: UserCell.reuseId)
-        
-        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.reuseId)
-        
-        collectionView.delegate = self
+        userListener = userReference.addSnapshotListener({ (querySnapshot, error) in
+            guard let snapshot = querySnapshot else {
+                print("Error fetching snapshots: \(error!)")
+                return
+            }
+            
+            snapshot.documentChanges.forEach { diff in
+                guard let user = MUser(document: diff.document) else { return }
+                switch diff.type {
+                case .added:
+                    guard !self.users.contains(user) else { return }
+                    guard user != self.currentUser else { return }
+                    self.users.append(user)
+                case .modified:
+                    guard let index = self.users.firstIndex(of: user) else { return }
+                    self.users[index] = user
+                case .removed:
+                    guard let index = self.users.firstIndex(of: user) else { return }
+                    self.users.remove(at: index)
+                }
+            }
+            self.reloadData(with: nil)
+        })
     }
     
     // MARK: - Manage the data in UICV
+    private func reloadData(with searchText: String?) {
+        let filtered = users.filter { (user) -> Bool in
+            user.contains(searchText)
+        }
+        
+        currentSnapshot = NSDiffableDataSourceSnapshot<Section, MUser>()
+        currentSnapshot.appendSections([.main])
+        currentSnapshot.appendItems(filtered, toSection: .main)
+
+        self.dataSource.apply(currentSnapshot, animatingDifferences: true)
+    }
+
     
     func configure<T: SelfConfiguringCell, U: Decodable>(cellType: T.Type, with value: U, for indexPath: IndexPath) -> T {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.reuseId, for: indexPath) as? T else { fatalError("Unable to dequeue \(cellType)") }
@@ -66,7 +96,7 @@ class PeopleViewController: UIViewController {
     }
     
     private func createDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Section, UsersController.MUser>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, user) -> UICollectionViewCell? in
+        dataSource = UICollectionViewDiffableDataSource<Section, MUser>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, user) -> UICollectionViewCell? in
             
             guard let section = Section(rawValue: indexPath.section)
             else { fatalError("Unknown section kind") }
@@ -75,7 +105,6 @@ class PeopleViewController: UIViewController {
             case .main:
                 return self.configure(cellType: UserCell.self, with: user, for: indexPath)
             }
-        
         })
         
         dataSource.supplementaryViewProvider = { [weak self]
@@ -103,21 +132,37 @@ class PeopleViewController: UIViewController {
             return sectionHeader
         }
     }
+}
+
+// MARK: Setup UI Elements
+extension PeopleViewController {
     
-    // TODO: limit don't work
-    private func reloadData(with searchText: String?) {
-        let users = usersController.filteredUsers(with: searchText)
+    private func setupSearchBar() {
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        let searchController = UISearchController(searchResultsController: nil)
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
+    }
+    
+    private func setupCollectionView() {
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(collectionView)
+        collectionView.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.9725490196, blue: 0.9921568627, alpha: 1)
         
-        var snapshot = NSDiffableDataSourceSnapshot<Section, UsersController.MUser>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(users, toSection: .main)
+        collectionView.register(UserCell.self, forCellWithReuseIdentifier: UserCell.reuseId)
         
-        self.dataSource.apply(snapshot, animatingDifferences: true)
+        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.reuseId)
+        
+        collectionView.delegate = self
     }
 }
 
 // MARK: - Setup Layout
-
 extension PeopleViewController {
     func createLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),

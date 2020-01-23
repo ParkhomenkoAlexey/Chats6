@@ -30,7 +30,7 @@ extension UIImageView {
         
         if let chachedImage = self.getCachedImage(url: url) {
             self.image = chachedImage
-            print("from cached")
+//            print("from cached")
             return
         }
         
@@ -41,7 +41,7 @@ extension UIImageView {
             }
             DispatchQueue.main.async {
                 self.image = UIImage(data: data)
-                print("from internet")
+//                print("from internet")
             }
             self.saveImageCache(data: data, response: response)
         }

@@ -18,7 +18,7 @@ class FirestoreService {
     
     let usersRef = Firestore.firestore().collection("users")
     
-    func saveProfileWith(id: String?, email: String?, username: String?, avatarImage: UIImage?, description: String?, sex: String?, completion: @escaping (Result<UsersController.MUser, Error>) -> Void) {
+    func saveProfileWith(id: String?, email: String?, username: String?, avatarImage: UIImage?, description: String?, sex: String?, completion: @escaping (Result<MUser, Error>) -> Void) {
         
         guard Validators.isFilled(username: username, description: description, sex: sex) else {
             completion(.failure(UserError.notFilled))
@@ -30,7 +30,7 @@ class FirestoreService {
             return
         }
         
-        var muser = UsersController.MUser.init(username: username!,
+        var muser = MUser.init(username: username!,
                                               avatarStringURL: "not exist",
                                               email: email!,
                                               description: description!,
@@ -55,12 +55,12 @@ class FirestoreService {
         } // StorageService
     } // saveProfileWith
     
-    func getUserData(user: User, completion: @escaping (Result<UsersController.MUser, Error>) -> Void) {
+    func getUserData(user: User, completion: @escaping (Result<MUser, Error>) -> Void) {
         let docRef = Firestore.firestore().collection("users").document(user.uid)
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 
-                guard let muser = UsersController.MUser(document: document) else {
+                guard let muser = MUser(document: document) else {
                     completion(.failure(UserError.cantUnwrapToMUser))
                   return
                 }
@@ -70,4 +70,20 @@ class FirestoreService {
             }
         }
     } // getUserData
+    
+//    func getUsers(completion: @escaping (Result<[MUser], Error>) -> Void) {
+//        Firestore.firestore().collection("users").getDocuments { (querySnapshot, error) in
+//            var users: [MUser] = []
+//            if let error = error {
+//                completion(.failure(error))
+//            } else {
+//                for document in querySnapshot!.documents {
+//                    if let muser = MUser(document: document) {
+//                        users.append(muser)
+//                    }
+//                }
+//                completion(.success(users))
+//            }
+//        }
+//    }
 }

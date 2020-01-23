@@ -13,24 +13,19 @@ import SwiftUI
 
 class MainTabBarController: UITabBarController {
     
-    private let currentUser: UsersController.MUser
+    private let currentUser: MUser
     
-    init(currentUser: UsersController.MUser = UsersController.MUser(username: "dfd", avatarStringURL: "fdf", email: "frgr", description: "frf", sex: "frfr", identifier: "fefe")) {
+    init(currentUser: MUser = MUser(username: "dfd", avatarStringURL: "fdf", email: "frgr", description: "frf", sex: "frfr", identifier: "fefe")) {
         self.currentUser = currentUser
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("#function: \(#function) currentUser.username: \(currentUser.username)")
         view.backgroundColor = .white
         
         let listViewController = ListViewController()
-        let peopleViewController = PeopleViewController()
+        let peopleViewController = PeopleViewController(currentUser: currentUser)
         
         tabBar.tintColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
         let boldConfig = UIImage.SymbolConfiguration(weight: .medium)
@@ -38,17 +33,13 @@ class MainTabBarController: UITabBarController {
         let peopleImage = UIImage(systemName: "person.2", withConfiguration: boldConfig)!
         
         viewControllers = [
-            generateNavigationController(rootViewController: listViewController,
-            title: "Conversations",
-            image: convImage),
+            
             generateNavigationController(rootViewController: peopleViewController,
             title: "People",
-            image: peopleImage)
-            
-            
-            
-            
-            
+            image: peopleImage),
+            generateNavigationController(rootViewController: listViewController,
+            title: "Conversations",
+            image: convImage)
         ]
     }
     
@@ -59,6 +50,9 @@ class MainTabBarController: UITabBarController {
         return navigationVC
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 // MARK: - SwiftUI

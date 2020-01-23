@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SDWebImage
 
 class UserCell: UICollectionViewCell, SelfConfiguringCell {
     
@@ -15,8 +16,11 @@ class UserCell: UICollectionViewCell, SelfConfiguringCell {
     
     let userImageView = UIImageView()
     let userName = UILabel(text: "test", font: .laoSangamMN20())
-
     
+    override func prepareForReuse() {
+        userImageView.image = nil
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(white: 1, alpha: 1)
@@ -39,22 +43,17 @@ class UserCell: UICollectionViewCell, SelfConfiguringCell {
     }
     
     
-    
-    
-    
     func configure<U>(with value: U) where U : Decodable {
-        guard let user: UsersController.MUser = value as? UsersController.MUser else { return }
-        userImageView.image = UIImage(named: user.avatarStringURL)
+        guard let user: MUser = value as? MUser else { return }
         userName.text = user.username
+        guard let url = URL(string: user.avatarStringURL) else { return }
+        userImageView.sd_setImage(with: url, completed: nil)
     }
     
     func setupConstraints() {
         userImageView.translatesAutoresizingMaskIntoConstraints = false
-        userImageView.backgroundColor = .red
         insertSubview((userImageView), at: 0)
         insertSubview((userName), at: 0)
-//        addSubview(userImageView)
-//        addSubview(userName)
         
         // userImageView constraints
         userImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true

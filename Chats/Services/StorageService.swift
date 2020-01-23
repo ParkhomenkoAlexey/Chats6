@@ -38,9 +38,3 @@ class StorageService {
         }
     }
 }
-
-extension StorageService {
-    private enum Keys: String {
-        case avatars
-    }
-}

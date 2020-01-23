@@ -10,8 +10,7 @@ import Foundation
 import UIKit
 import FirebaseFirestore
 
-class UsersController {
-    struct MUser: Decodable, Hashable {
+struct MUser: Decodable, Hashable {
         var username: String
         var email: String
         var avatarStringURL: String
@@ -32,6 +31,24 @@ class UsersController {
         
         init?(document: DocumentSnapshot) {
             guard let data = document.data() else { return nil }
+            guard let username = data["username"] as? String,
+                let email = data["email"] as? String,
+                let avatarStringURL = data["avatarStringURL"] as? String,
+                let description = data["description"] as? String,
+                let sex = data["sex"] as? String,
+                let identifier = data["uid"] as? String else {
+                    return nil
+            }
+            self.username = username
+            self.email = email
+            self.avatarStringURL = avatarStringURL
+            self.description = description
+            self.sex = sex
+            self.identifier = identifier
+        }
+        
+        init?(document: QueryDocumentSnapshot) {
+            let data = document.data()
             guard let username = data["username"] as? String,
                 let email = data["email"] as? String,
                 let avatarStringURL = data["avatarStringURL"] as? String,
@@ -74,20 +91,6 @@ class UsersController {
             return username.lowercased().contains(lowercasedFilter)
         }
     }
-    
-    func filteredUsers(with searchText: String?=nil, limit: Int?=nil) -> [MUser] {
-        let filtered = users.filter { $0.contains(searchText) }
-        if let limit = limit {
-            return Array(filtered.prefix(through: limit))
-        } else {
-            return filtered
-        }
-    }
-    
-    private lazy var users: [MUser] = {
-        return Bundle.main.decode([MUser].self, from: "users.json")
-    }()
-}
 
 
 

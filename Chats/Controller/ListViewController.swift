@@ -205,11 +205,11 @@ extension ListViewController: UICollectionViewDelegate {
             print(chat.friendName)
         default:
             print(chat.lastMessage)
-            let currentUser = UsersController.MUser(username: "Me",
-                                                    avatarStringURL: "human3",
-                                                    email: "gtgt",
-                                                    description: "3232",
-                                                    sex: "male")
+            let currentUser = MUser(username: "Me",
+                                    avatarStringURL: "human3",
+                                    email: "gtgt",
+                                    description: "3232",
+                                    sex: "male")
             let chatsVC = ChatsViewController(user: currentUser, chat: chat)
             navigationController?.pushViewController(chatsVC, animated: true)
         }
