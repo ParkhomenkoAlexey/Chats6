@@ -39,6 +39,10 @@ class PeopleViewController: UIViewController {
         title = currentUser.username
     }
     
+    deinit {
+        userListener?.remove()
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -202,7 +206,8 @@ extension PeopleViewController {
 extension PeopleViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath)
-        let profileVC = ProfileViewController()
+        guard let user = self.dataSource.itemIdentifier(for: indexPath) else { return }
+        let profileVC = ProfileViewController(user: user, currentUser: currentUser)
         present(profileVC, animated: true, completion: nil)
     }
 }

@@ -99,7 +99,8 @@ struct TextFieldProvider: PreviewProvider {
     
     struct ContainterView: UIViewControllerRepresentable {
         
-        let tabBar = ProfileViewController()
+        let tabBar = ProfileViewController(user: MUser(username: "dfd", avatarStringURL: "fdf", email: "frgr", description: "frf", sex: "frfr", identifier: "fefe"),
+        currentUser: MUser(username: "ddedfd", avatarStringURL: "fddef", email: "frgdedr", description: "frdaf", sex: "farfr", identifier: "fefeg"))
         func makeUIViewController(context: UIViewControllerRepresentableContext<TextFieldProvider.ContainterView>) -> ProfileViewController {
             return tabBar
         }

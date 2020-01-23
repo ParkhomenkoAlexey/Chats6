@@ -16,7 +16,12 @@ class FirestoreService {
     static let shared = FirestoreService()
     private let auth = Auth.auth()
     
-    let usersRef = Firestore.firestore().collection("users")
+    
+    private let db = Firestore.firestore()
+    
+    private var usersRef: CollectionReference {
+      return db.collection("users")
+    }
     
     func saveProfileWith(id: String?, email: String?, username: String?, avatarImage: UIImage?, description: String?, sex: String?, completion: @escaping (Result<MUser, Error>) -> Void) {
         
@@ -70,6 +75,25 @@ class FirestoreService {
             }
         }
     } // getUserData
+    
+    private var reference: CollectionReference?
+    func sendInviteWith(message: String, sender: MUser, receiver: MUser, completion: @escaping (Result<Void, Error>) -> Void) {
+        var waitingChat = ["username": sender.username]
+        waitingChat["avatarStringURL"] = sender.avatarStringURL
+        waitingChat["uid"] = sender.identifier
+        waitingChat["invitationMessage"] = message
+        
+        reference = db.collection(["users", receiver.identifier, "waitingChats"].joined(separator: "/"))
+
+        reference?.document(sender.identifier).setData(waitingChat, completion: { (error) in
+            if let error = error {
+              completion(.failure(error))
+              return
+            }
+
+              completion(.success(Void()))
+        })
+    }
     
 //    func getUsers(completion: @escaping (Result<[MUser], Error>) -> Void) {
 //        Firestore.firestore().collection("users").getDocuments { (querySnapshot, error) in

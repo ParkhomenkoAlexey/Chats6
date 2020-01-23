@@ -17,6 +17,22 @@ class ProfileViewController: UIViewController {
     let aboutMeLabel = UILabel(text: "You have the opportunity to chat with the most beautifull guy in the Moscow", font: .systemFont(ofSize: 16, weight: .light))
     let myTextField = InsetableTextField()
     
+    private let user: MUser
+    private let currentUser: MUser
+    
+    init(user: MUser, currentUser: MUser) {
+        self.user = user
+        self.currentUser = currentUser
+        self.nameLabel.text = user.username
+        self.aboutMeLabel.text = user.description
+        self.imageView.sd_setImage(with: URL(string: user.avatarStringURL), completed: nil)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -33,7 +49,20 @@ class ProfileViewController: UIViewController {
     }
     
     @objc func sendMessage() {
-        print(#function)
+        guard let message = myTextField.text, message != "" else { return }
+        self.dismiss(animated: true) {
+            
+            FirestoreService.shared.sendInviteWith(message: message, sender: self.currentUser, receiver: self.user) { (result) in
+                switch result {
+                case .success:
+                    UIApplication.getTopViewController()?.showAlert(with: "Успешно!", and: "Ваше сообщение для \(self.user.username) было отправлено.")
+                case .failure(_):
+                    UIApplication.getTopViewController()?.showAlert(with: "Ошибка!", and: "Ваше сообщение для \(self.user.username) не отправилось.")
+                }
+            }
+            
+            
+        }
     }
 }
 
@@ -100,7 +129,8 @@ struct ProfileProvider: PreviewProvider {
     
     struct ContainterView: UIViewControllerRepresentable {
         
-        let tabBar = ProfileViewController()
+        let tabBar = ProfileViewController(user: MUser(username: "dfd", avatarStringURL: "fdf", email: "frgr", description: "frf", sex: "frfr", identifier: "fefe"),
+        currentUser: MUser(username: "ddedfd", avatarStringURL: "fddef", email: "frgdedr", description: "frdaf", sex: "farfr", identifier: "fefeg"))
         func makeUIViewController(context: UIViewControllerRepresentableContext<ProfileProvider.ContainterView>) -> ProfileViewController {
             return tabBar
         }
