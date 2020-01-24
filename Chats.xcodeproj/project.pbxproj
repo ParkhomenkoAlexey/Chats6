@@ -19,6 +19,8 @@
 		F065ABE523D9A3F400DDC86A /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F065ABE423D9A3F400DDC86A /* StorageService.swift */; };
 		F065ABE823D9F3FE00DDC86A /* AuthNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F065ABE723D9F3FE00DDC86A /* AuthNavigation.swift */; };
 		F065ABEA23DB0C2500DDC86A /* ListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F065ABE923DB0C2500DDC86A /* ListenerService.swift */; };
+		F065ABEC23DB2A6700DDC86A /* WaitingChatsNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F065ABEB23DB2A6700DDC86A /* WaitingChatsNavigation.swift */; };
+		F065ABEE23DB533E00DDC86A /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F065ABED23DB533E00DDC86A /* MessageError.swift */; };
 		F069599E23D4F83F002DAB6A /* ChatRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F069599D23D4F83F002DAB6A /* ChatRequestViewController.swift */; };
 		F06959A023D51542002DAB6A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F069599F23D51542002DAB6A /* ProfileViewController.swift */; };
 		F06959A223D51972002DAB6A /* InsetableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06959A123D51972002DAB6A /* InsetableTextField.swift */; };
@@ -74,6 +76,8 @@
 		F065ABE423D9A3F400DDC86A /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 		F065ABE723D9F3FE00DDC86A /* AuthNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNavigation.swift; sourceTree = "<group>"; };
 		F065ABE923DB0C2500DDC86A /* ListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerService.swift; sourceTree = "<group>"; };
+		F065ABEB23DB2A6700DDC86A /* WaitingChatsNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingChatsNavigation.swift; sourceTree = "<group>"; };
+		F065ABED23DB533E00DDC86A /* MessageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageError.swift; sourceTree = "<group>"; };
 		F069599D23D4F83F002DAB6A /* ChatRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestViewController.swift; sourceTree = "<group>"; };
 		F069599F23D51542002DAB6A /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		F06959A123D51972002DAB6A /* InsetableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetableTextField.swift; sourceTree = "<group>"; };
@@ -236,6 +240,7 @@
 				F0CD361823D891A700DC4CE5 /* Validators.swift */,
 				F0CD361A23D891BA00DC4CE5 /* AuthErrors.swift */,
 				F0CD362423D8F88900DC4CE5 /* UserErrors.swift */,
+				F065ABED23DB533E00DDC86A /* MessageError.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -269,6 +274,7 @@
 			children = (
 				F0D2D27723C6956B00C00476 /* SelfConfigureCell.swift */,
 				F065ABE723D9F3FE00DDC86A /* AuthNavigation.swift */,
+				F065ABEB23DB2A6700DDC86A /* WaitingChatsNavigation.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -440,6 +446,7 @@
 			files = (
 				F075D19823C35A2400FDF888 /* UIFont + Extension.swift in Sources */,
 				F065ABE823D9F3FE00DDC86A /* AuthNavigation.swift in Sources */,
+				F065ABEC23DB2A6700DDC86A /* WaitingChatsNavigation.swift in Sources */,
 				F078AEC123D78820001AC6A2 /* ChatsViewController.swift in Sources */,
 				F0906A4623C8CF80004A5E8C /* PeopleViewController.swift in Sources */,
 				F0CD362323D8E68E00DC4CE5 /* FirestoreService.swift in Sources */,
@@ -448,6 +455,7 @@
 				F0D2D27C23C69DF500C00476 /* Bundle-Decodable.swift in Sources */,
 				F0F6B88223C52455007B7B48 /* GradientView.swift in Sources */,
 				F075D19A23C35C4300FDF888 /* UISegmentedControl + Extension.swift in Sources */,
+				F065ABEE23DB533E00DDC86A /* MessageError.swift in Sources */,
 				F0CD361F23D8DA9A00DC4CE5 /* UIApplication.swift in Sources */,
 				F06959A223D51972002DAB6A /* InsetableTextField.swift in Sources */,
 				F06959A023D51542002DAB6A /* ProfileViewController.swift in Sources */,

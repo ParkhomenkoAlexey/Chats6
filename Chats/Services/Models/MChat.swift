@@ -47,4 +47,12 @@ struct MChat: Hashable {
         rep["lastMessage"] = lastMessageContent
         return rep
     }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(friendIdentifier)
+    }
+    
+    static func == (lhs: MChat, rhs: MChat) -> Bool {
+        return lhs.friendIdentifier == rhs.friendIdentifier
+    }
 }

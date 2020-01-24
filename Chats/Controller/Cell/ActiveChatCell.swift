@@ -12,7 +12,7 @@ import SwiftUI
 
 class ActiveChatCell: UICollectionViewCell, SelfConfiguringCell {
     
-    static var reuseId: String = "ListCell"
+    static var reuseId: String = "ActiveChatCell"
     
     let friendImageView = UIImageView()
     let friendName = UILabel(text: "User name", font: .laoSangamMN20())
@@ -45,7 +45,7 @@ class ActiveChatCell: UICollectionViewCell, SelfConfiguringCell {
 extension ActiveChatCell {
     func setupConstraints() {
         friendImageView.translatesAutoresizingMaskIntoConstraints = false
-        friendImageView.backgroundColor = .black
+        friendImageView.backgroundColor = .white
         gradientView.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(friendImageView)

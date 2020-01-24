@@ -16,11 +16,20 @@ class FirestoreService {
     static let shared = FirestoreService()
     private let auth = Auth.auth()
     
-    
     private let db = Firestore.firestore()
+    
+    private var currentUser: MUser!
     
     private var usersRef: CollectionReference {
       return db.collection("users")
+    }
+    
+    private var waitingChatsRef: CollectionReference {
+      return db.collection(["users", currentUser.identifier, "waitingChats"].joined(separator: "/"))
+    }
+    
+    private var activeChatsRef: CollectionReference {
+      return db.collection(["users", currentUser.identifier, "activeChats"].joined(separator: "/"))
     }
     
     func saveProfileWith(id: String?, email: String?, username: String?, avatarImage: UIImage?, description: String?, sex: String?, completion: @escaping (Result<MUser, Error>) -> Void) {
@@ -60,8 +69,9 @@ class FirestoreService {
         } // StorageService
     } // saveProfileWith
     
+    // for SceneDelegate
     func getUserData(user: User, completion: @escaping (Result<MUser, Error>) -> Void) {
-        let docRef = Firestore.firestore().collection("users").document(user.uid)
+        let docRef = usersRef.document(user.uid)
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 
@@ -69,6 +79,7 @@ class FirestoreService {
                     completion(.failure(UserError.cantUnwrapToMUser))
                   return
                 }
+                self.currentUser = muser
                 completion(.success(muser))
             } else {
                 completion(.failure(UserError.cantGetUserInfo))
@@ -76,23 +87,24 @@ class FirestoreService {
         }
     } // getUserData
     
-    private var reference: CollectionReference?
-    private var messagesRef: CollectionReference?
-    func sendInviteWith(message: String, sender: MUser, receiver: MUser, completion: @escaping (Result<Void, Error>) -> Void) {
+    
+    // for ProfileViewController
+    func createWaitingChat(message: String, receiver: MUser, completion: @escaping (Result<Void, Error>) -> Void) {
+        let reference = db.collection(["users", receiver.identifier, "waitingChats"].joined(separator: "/"))
+        let messagesRef = reference.document(self.currentUser.identifier).collection("messages")
         
-        let message = MMessage(user: sender, content: message)
-        let chat = MChat(friendUsername: sender.username,
-                         friendAvatarStringURL: sender.avatarStringURL,
-                         friendIdentifier: sender.identifier, lastMessageContent: message.content)
+        let message = MMessage(user: currentUser, content: message)
+        let chat = MChat(friendUsername: currentUser.username,
+                         friendAvatarStringURL: currentUser.avatarStringURL,
+                         friendIdentifier: currentUser.identifier, lastMessageContent: message.content)
         
-        reference = db.collection(["users", receiver.identifier, "waitingChats"].joined(separator: "/"))
-        reference?.document(sender.identifier).setData(chat.representation, completion: { (error) in
+        
+        reference.document(currentUser.identifier).setData(chat.representation, completion: { (error) in
             if let error = error {
               completion(.failure(error))
               return
             }
-            self.messagesRef = self.db.collection(["users", receiver.identifier, "waitingChats", sender.identifier, "messages"].joined(separator: "/"))
-            self.messagesRef?.addDocument(data: message.representation, completion: { (error) in
+            messagesRef.addDocument(data: message.representation, completion: { (error) in
                 if let error = error {
                   completion(.failure(error))
                   return
@@ -100,23 +112,101 @@ class FirestoreService {
                 completion(.success(Void()))
             })
         })
-        
-        messagesRef = db.collection(["users", receiver.identifier, "waitingChats"].joined(separator: "/"))
     }
     
-//    func getUsers(completion: @escaping (Result<[MUser], Error>) -> Void) {
-//        Firestore.firestore().collection("users").getDocuments { (querySnapshot, error) in
-//            var users: [MUser] = []
-//            if let error = error {
-//                completion(.failure(error))
-//            } else {
-//                for document in querySnapshot!.documents {
-//                    if let muser = MUser(document: document) {
-//                        users.append(muser)
-//                    }
-//                }
-//                completion(.success(users))
-//            }
-//        }
-//    }
+    // for ListViewController
+    func deleteWaitingChat(chat: MChat, completion: @escaping (Result<Void, Error>) -> Void) {
+        waitingChatsRef.document(chat.friendIdentifier).delete(completion: { (error) in
+            if let error = error { completion(.failure(error))
+              return }
+            self.deleteMessages(chat: chat, completion: completion)
+        })
+    }
+    
+    // 2
+    // for deleteWaitingChat func
+    func deleteMessages(chat: MChat, completion: @escaping (Result<Void, Error>) -> Void) {
+        let reference = waitingChatsRef.document(chat.friendIdentifier).collection("messages")
+        
+        getWaitingChatMessages(chat: chat) { (result) in
+            switch result {
+            case .success(let messages):
+                for message in messages {
+                    guard let documentId = message.id else { return }
+                    let messageRef = reference.document(documentId)
+                    messageRef.delete { (error) in
+                        if let error = error {
+                            completion(.failure(error))
+                            return
+                        }
+                        completion(.success(Void()))
+                    }
+                    
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // 1
+    func getWaitingChatMessages(chat: MChat, completion: @escaping (Result<[MMessage], Error>) -> Void) {
+        var messages = [MMessage]()
+        let reference = waitingChatsRef.document(chat.friendIdentifier).collection("messages")
+        reference.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            for document in querySnapshot!.documents {
+                guard let message = MMessage(document: document) else {
+                completion(.failure(MessageError.cantUnwrapToMMessage))
+                return }
+                messages.append(message)
+            }
+            completion(.success(messages))
+        }
+    }
+    
+    
+    // for ListViewController
+    func changeToActive(chat: MChat, completion: @escaping (Result<Void, Error>) -> Void) {
+        getWaitingChatMessages(chat: chat) { (result) in
+            switch result {
+            case .success(let messages):
+                self.deleteWaitingChat(chat: chat) { (result) in
+                    switch result {
+                    case .success:
+                        self.createActiveChat(chat: chat, messages: messages, completion: completion)
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // 3
+    func createActiveChat(chat: MChat, messages: [MMessage], completion: @escaping (Result<Void, Error>) -> Void) {
+        let messageRef = activeChatsRef.document(chat.friendIdentifier).collection("messages")
+        
+        activeChatsRef.document(chat.friendIdentifier).setData(chat.representation) { (error) in
+            if let error = error {
+              completion(.failure(error))
+              return
+            }
+            for message in messages {
+                messageRef.addDocument(data: message.representation) { (error) in
+                    if let error = error {
+                      completion(.failure(error))
+                      return
+                    }
+                    completion(.success(Void()))
+                }
+            }
+        }
+    }
 }
+

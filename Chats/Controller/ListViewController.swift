@@ -13,18 +13,8 @@ import FirebaseFirestore
 
 class ListViewController: UIViewController {
     
-    let sections = [MSection]()
-    private var whaitingChats: [MChat] = [
-        MChat(friendUsername: "frfr", friendAvatarStringURL: "frefe", friendIdentifier: "fre", lastMessageContent: "fre"),
-        MChat(friendUsername: "frfssdr", friendAvatarStringURL: "fretfe", friendIdentifier: "fregr", lastMessageContent: "ffrre"),
-        MChat(friendUsername: "frftfr", friendAvatarStringURL: "fwwrefe", friendIdentifier: "frwe", lastMessageContent: "fggre")
-    ]
-    
-    private var activeChats: [MChat] = [
-        MChat(friendUsername: "gtr", friendAvatarStringURL: "frefe", friendIdentifier: "fre", lastMessageContent: "fre"),
-        MChat(friendUsername: "wer", friendAvatarStringURL: "fretfe", friendIdentifier: "fregr", lastMessageContent: "ffrre"),
-        MChat(friendUsername: "wer", friendAvatarStringURL: "fwwrefe", friendIdentifier: "frwe", lastMessageContent: "fggre")
-    ]
+    private var waitingChats = [MChat]()
+    private var activeChats = [MChat]()
     
     enum Section: Int, CaseIterable {
         case waitingChats, activeChats
@@ -39,6 +29,9 @@ class ListViewController: UIViewController {
         }
     }
     
+    private var waitingChatsListener: ListenerRegistration?
+    private var activeChatsListener: ListenerRegistration?
+    
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, MChat>?
 
@@ -48,6 +41,11 @@ class ListViewController: UIViewController {
         self.currentUser = currentUser
         super.init(nibName: nil, bundle: nil)
         title = currentUser.username
+    }
+    
+    deinit {
+        waitingChatsListener?.remove()
+        activeChatsListener?.remove()
     }
     
     required init?(coder: NSCoder) {
@@ -61,6 +59,33 @@ class ListViewController: UIViewController {
         setupCollectionView()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(signOut))
+        
+        waitingChatsListener = ListenerService.shared.whaitingChatsObserve(chats: waitingChats, currentUser: currentUser, completion: { (result) in
+            switch result {
+                
+            case .success(let waitingChats):
+                if self.waitingChats != [], self.waitingChats.count <= waitingChats.count {
+                    let chatRequestVC = ChatRequestViewController(chat: waitingChats.last!)
+                    chatRequestVC.delegate = self
+                    self.present(chatRequestVC, animated: true, completion: nil)
+                }
+                self.waitingChats = waitingChats
+                self.reloadData()
+                
+            case .failure(let error):
+                self.showAlert(with: "Ошибика!", and: error.localizedDescription)
+            }
+        })
+        
+        activeChatsListener = ListenerService.shared.activeChatsObserve(chats: activeChats, currentUser: currentUser, completion: { (result) in
+            switch result {
+            case .success(let activeChats):
+                self.activeChats = activeChats
+                self.reloadData()
+            case .failure(let error):
+                self.showAlert(with: "Ошибика!", and: error.localizedDescription)
+            }
+        })
     }
     
     // MARK: Setup UI Elements
@@ -115,16 +140,15 @@ class ListViewController: UIViewController {
             }
         })
         
-        dataSource?.supplementaryViewProvider = { [weak self]
+        dataSource?.supplementaryViewProvider = {
             collectionView,
             kind,
             indexPath in
             
             guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeader.reuseId, for: indexPath) as? SectionHeader else { fatalError("Cannot create new supplementary") }
             
-            // todo: возможно, переделать как в PeopleVC
-            guard let firstChat = self?.dataSource?.itemIdentifier(for: indexPath) else { return nil }
-            guard let section = self?.dataSource?.snapshot().sectionIdentifier(containingItem: firstChat) else { return nil }
+            guard let section = Section(rawValue: indexPath.section)
+            else { fatalError("Unknown section kind") }
             
             sectionHeader.configure(
                 text: section.description(),
@@ -133,15 +157,16 @@ class ListViewController: UIViewController {
             return sectionHeader
             
         }
+        
+        reloadData()
     }
     
     func reloadData() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, MChat>()
 
-        snapshot.appendSections([.waitingChats])
-        snapshot.appendItems(whaitingChats, toSection: .waitingChats)
+        snapshot.appendSections([.waitingChats, .activeChats])
+        snapshot.appendItems(waitingChats, toSection: .waitingChats)
         
-        snapshot.appendSections([.activeChats])
         snapshot.appendItems(activeChats, toSection: .activeChats)
         
         dataSource?.apply(snapshot, animatingDifferences: true)
@@ -253,16 +278,37 @@ extension ListViewController: UICollectionViewDelegate {
         
         switch section {
         case .waitingChats:
-            print(chat.friendUsername)
+            let chatRequestVC = ChatRequestViewController(chat: chat)
+            chatRequestVC.delegate = self
+            self.present(chatRequestVC, animated: true, completion: nil)
         case .activeChats:
-            print(chat.lastMessageContent)
-            let currentUser = MUser(username: "Me",
-                                    avatarStringURL: "human3",
-                                    email: "gtgt",
-                                    description: "3232",
-                                    sex: "male")
             let chatsVC = ChatsViewController(user: currentUser, chat: chat)
             navigationController?.pushViewController(chatsVC, animated: true)
+        }
+    }
+}
+
+// MARK: - WaitigChatsNavigation
+extension ListViewController: WaitingChatsNavigation {
+    func removeWaitingChat(chat: MChat) {
+        FirestoreService.shared.deleteWaitingChat(chat: chat) { (result) in
+            switch result {
+            case .success:
+                self.showAlert(with: "Успешно!", and: "Чат с \(chat.friendUsername) был удален")
+            case .failure(let error):
+                self.showAlert(with: "Ошибка!", and: error.localizedDescription)
+            }
+        }
+    }
+    
+    func changeToActive(chat: MChat) {
+        FirestoreService.shared.changeToActive(chat: chat) { (result) in
+            switch result {
+            case .success:
+                self.showAlert(with: "Успешно!", and: "Приятного общения с \(chat.friendUsername).")
+            case .failure(let error):
+                self.showAlert(with: "Ошибка!", and: error.localizedDescription)
+            }
         }
     }
 }

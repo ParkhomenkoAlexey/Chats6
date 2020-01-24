@@ -23,9 +23,6 @@ class PeopleViewController: UIViewController {
     
     private var users: [MUser] = []
     private var usersListener: ListenerRegistration?
-//    private var usersReference: CollectionReference {
-//      return Firestore.firestore().collection("users")
-//    }
     
     var dataSource: UICollectionViewDiffableDataSource<Section, MUser>!
     var collectionView: UICollectionView! = nil

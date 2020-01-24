@@ -18,12 +18,43 @@ class ChatRequestViewController: UIViewController {
     let acceptButton = UIButton(title: "ACCEPT", titleColor: .white, backgroundColor: .black, font: .laoSangamMN20())
     let denyButton = UIButton(title: "Deny", titleColor: #colorLiteral(red: 0.8352941176, green: 0.2, blue: 0.2, alpha: 1), backgroundColor: .mainWhite(), font: .laoSangamMN20(), cornerRadius: 10)
     
+    private var chat: MChat
+    
+    weak var delegate: WaitingChatsNavigation?
+    
+    init(chat: MChat) {
+        self.chat = chat
+        nameLabel.text = chat.friendUsername
+        imageView.sd_setImage(with: URL(string: chat.friendAvatarStringURL), completed: nil)
+        super.init(nibName: nil, bundle: nil)
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .black
         customizeElements()
         setupConstraints()
+        
+        acceptButton.addTarget(self, action: #selector(acceptButtonTapped), for: .touchUpInside)
+        denyButton.addTarget(self, action: #selector(denyButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func acceptButtonTapped() {
+        self.dismiss(animated: true) { [delegate] in
+            delegate?.changeToActive(chat: self.chat)
+        }
+    }
+    
+    @objc func denyButtonTapped() {
+        self.dismiss(animated: true) { [delegate] in
+            delegate?.removeWaitingChat(chat: self.chat)
+        }
     }
     
     func customizeElements() {
@@ -103,7 +134,7 @@ struct ChatRequestProvider: PreviewProvider {
     
     struct ContainterView: UIViewControllerRepresentable {
         
-        let tabBar = ChatRequestViewController()
+        let tabBar = ChatRequestViewController(chat: MChat(friendUsername: "ef", friendAvatarStringURL: "fe", friendIdentifier: "fr", lastMessageContent: "efr"))
         func makeUIViewController(context: UIViewControllerRepresentableContext<ChatRequestProvider.ContainterView>) -> ChatRequestViewController {
             return tabBar
         }
