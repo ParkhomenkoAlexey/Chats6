@@ -22,10 +22,10 @@ class PeopleViewController: UIViewController {
     }
     
     private var users: [MUser] = []
-    private var userListener: ListenerRegistration?
-    private var userReference: CollectionReference {
-      return Firestore.firestore().collection("users")
-    }
+    private var usersListener: ListenerRegistration?
+//    private var usersReference: CollectionReference {
+//      return Firestore.firestore().collection("users")
+//    }
     
     var dataSource: UICollectionViewDiffableDataSource<Section, MUser>!
     var collectionView: UICollectionView! = nil
@@ -33,14 +33,14 @@ class PeopleViewController: UIViewController {
     
     private let currentUser: MUser
     
-    init(currentUser: MUser = MUser(username: "dfd", avatarStringURL: "fdf", email: "frgr", description: "frf", sex: "frfr", identifier: "fefe")) {
+    init(currentUser: MUser) {
         self.currentUser = currentUser
         super.init(nibName: nil, bundle: nil)
         title = currentUser.username
     }
     
     deinit {
-        userListener?.remove()
+        usersListener?.remove()
     }
     
     required init?(coder: NSCoder) {
@@ -54,28 +54,14 @@ class PeopleViewController: UIViewController {
         setupSearchBar()
         createDataSource()
         
-        userListener = userReference.addSnapshotListener({ (querySnapshot, error) in
-            guard let snapshot = querySnapshot else {
-                print("Error fetching snapshots: \(error!)")
-                return
+        usersListener = ListenerService.shared.usersObserve(users: users, currentUser: currentUser, completion: { (result) in
+            switch result {
+            case .success(let users):
+                self.users = users
+                self.reloadData(with: nil)
+            case .failure(let error):
+                self.showAlert(with: "Ошибика!", and: error.localizedDescription)
             }
-            
-            snapshot.documentChanges.forEach { diff in
-                guard let user = MUser(document: diff.document) else { return }
-                switch diff.type {
-                case .added:
-                    guard !self.users.contains(user) else { return }
-                    guard user != self.currentUser else { return }
-                    self.users.append(user)
-                case .modified:
-                    guard let index = self.users.firstIndex(of: user) else { return }
-                    self.users[index] = user
-                case .removed:
-                    guard let index = self.users.firstIndex(of: user) else { return }
-                    self.users.remove(at: index)
-                }
-            }
-            self.reloadData(with: nil)
         })
     }
     

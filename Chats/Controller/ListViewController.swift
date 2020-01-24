@@ -9,11 +9,22 @@
 import Foundation
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
 
 class ListViewController: UIViewController {
     
-//    let sections = Bundle.main.decode([MSection].self, from: "chats.json")
     let sections = [MSection]()
+    private var whaitingChats: [MChat] = [
+        MChat(friendUsername: "frfr", friendAvatarStringURL: "frefe", friendIdentifier: "fre", lastMessageContent: "fre"),
+        MChat(friendUsername: "frfssdr", friendAvatarStringURL: "fretfe", friendIdentifier: "fregr", lastMessageContent: "ffrre"),
+        MChat(friendUsername: "frftfr", friendAvatarStringURL: "fwwrefe", friendIdentifier: "frwe", lastMessageContent: "fggre")
+    ]
+    
+    private var activeChats: [MChat] = [
+        MChat(friendUsername: "gtr", friendAvatarStringURL: "frefe", friendIdentifier: "fre", lastMessageContent: "fre"),
+        MChat(friendUsername: "wer", friendAvatarStringURL: "fretfe", friendIdentifier: "fregr", lastMessageContent: "ffrre"),
+        MChat(friendUsername: "wer", friendAvatarStringURL: "fwwrefe", friendIdentifier: "frwe", lastMessageContent: "fggre")
+    ]
     
     enum Section: Int, CaseIterable {
         case waitingChats, activeChats
@@ -29,7 +40,19 @@ class ListViewController: UIViewController {
     }
     
     var collectionView: UICollectionView!
-    var dataSource: UICollectionViewDiffableDataSource<MSection, MChat>?
+    var dataSource: UICollectionViewDiffableDataSource<Section, MChat>?
+
+    private let currentUser: MUser
+    
+    init(currentUser: MUser) {
+        self.currentUser = currentUser
+        super.init(nibName: nil, bundle: nil)
+        title = currentUser.username
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,20 +61,6 @@ class ListViewController: UIViewController {
         setupCollectionView()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(signOut))
-    }
-    
-    @objc private func signOut() {
-      let ac = UIAlertController(title: nil, message: "Are you sure you want to sign out?", preferredStyle: .alert)
-      ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-      ac.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { _ in
-        do {
-          try Auth.auth().signOut()
-            UIApplication.shared.keyWindow?.rootViewController = AuthViewController()
-        } catch {
-          print("Error signing out: \(error.localizedDescription)")
-        }
-      }))
-      present(ac, animated: true, completion: nil)
     }
     
     // MARK: Setup UI Elements
@@ -93,11 +102,15 @@ class ListViewController: UIViewController {
     }
     
     func createDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<MSection, MChat>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, chat) -> UICollectionViewCell? in
-            switch self.sections[indexPath.section].type {
-            case "waitingChats":
+        dataSource = UICollectionViewDiffableDataSource<Section, MChat>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, chat) -> UICollectionViewCell? in
+            
+            guard let section = Section(rawValue: indexPath.section)
+            else { fatalError("Unknown section kind") }
+
+            switch section {
+            case .waitingChats:
                 return self.configure(cellType: WaitingChatCell.self, with: chat, for: indexPath)
-            default:
+            case .activeChats:
                 return self.configure(cellType: ActiveChatCell.self, with: chat, for: indexPath)
             }
         })
@@ -109,12 +122,12 @@ class ListViewController: UIViewController {
             
             guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeader.reuseId, for: indexPath) as? SectionHeader else { fatalError("Cannot create new supplementary") }
             
+            // todo: возможно, переделать как в PeopleVC
             guard let firstChat = self?.dataSource?.itemIdentifier(for: indexPath) else { return nil }
             guard let section = self?.dataSource?.snapshot().sectionIdentifier(containingItem: firstChat) else { return nil }
-            if section.title.isEmpty { return nil }
             
             sectionHeader.configure(
-                text: section.title,
+                text: section.description(),
                 font: .laoSangamMN20(),
                 textColor: #colorLiteral(red: 0.5741485357, green: 0.5741624236, blue: 0.574154973, alpha: 1))
             return sectionHeader
@@ -123,25 +136,29 @@ class ListViewController: UIViewController {
     }
     
     func reloadData() {
-        var snapshot = NSDiffableDataSourceSnapshot<MSection, MChat>()
-        snapshot.appendSections(sections)
+        var snapshot = NSDiffableDataSourceSnapshot<Section, MChat>()
+
+        snapshot.appendSections([.waitingChats])
+        snapshot.appendItems(whaitingChats, toSection: .waitingChats)
         
-        for section in sections {
-            snapshot.appendItems(section.items, toSection: section)
-        }
-        dataSource?.apply(snapshot)
+        snapshot.appendSections([.activeChats])
+        snapshot.appendItems(activeChats, toSection: .activeChats)
+        
+        dataSource?.apply(snapshot, animatingDifferences: true)
     }
     
     // MARK: - Setup Layout
     
     func createCompositionalLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
-            let section = self.sections[sectionIndex]
             
-            switch section.type {
-            case "waitingChats":
+            guard let section = Section(rawValue: sectionIndex)
+            else { fatalError("Unknown section kind") }
+            
+            switch section {
+            case .waitingChats:
                 return self.createWaitingChatSection(using: section)
-            default:
+            case .activeChats:
                 return self.createActiveChatSection(using: section)
             }
         }
@@ -154,7 +171,7 @@ class ListViewController: UIViewController {
     
     // create single section
     // TODO - сделать пересчет layout для waiting
-    func createWaitingChatSection(using section: MSection) -> NSCollectionLayoutSection {
+    func createWaitingChatSection(using section: Section) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                               heightDimension: .fractionalHeight(1))
         let layoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -176,7 +193,7 @@ class ListViewController: UIViewController {
         return layoutSection
     }
     
-    func createActiveChatSection(using section: MSection) -> NSCollectionLayoutSection {
+    func createActiveChatSection(using section: Section) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                               heightDimension: .fractionalHeight(86))
         let layoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -209,15 +226,35 @@ class ListViewController: UIViewController {
     }
 }
 
+// MARK: - Actions
+extension ListViewController {
+    @objc private func signOut() {
+      let ac = UIAlertController(title: nil, message: "Are you sure you want to sign out?", preferredStyle: .alert)
+      ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+      ac.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { _ in
+        do {
+          try Auth.auth().signOut()
+            UIApplication.shared.keyWindow?.rootViewController = AuthViewController()
+        } catch {
+          print("Error signing out: \(error.localizedDescription)")
+        }
+      }))
+      present(ac, animated: true, completion: nil)
+    }
+}
+
 // MARK: - UICollectionViewDelegate
 extension ListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let chat = self.dataSource?.itemIdentifier(for: indexPath) else { return }
-        let section = sections[indexPath.section]
-        switch section.type {
-        case "waitingChats":
+        
+        guard let section = Section(rawValue: indexPath.section)
+            else { fatalError("Unknown section kind") }
+        
+        switch section {
+        case .waitingChats:
             print(chat.friendUsername)
-        default:
+        case .activeChats:
             print(chat.lastMessageContent)
             let currentUser = MUser(username: "Me",
                                     avatarStringURL: "human3",
