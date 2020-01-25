@@ -18,7 +18,7 @@ class FirestoreService {
     
     private let db = Firestore.firestore()
     
-    private var currentUser: MUser!
+    var currentUser: MUser!
     
     private var usersRef: CollectionReference {
       return db.collection("users")
@@ -123,7 +123,7 @@ class FirestoreService {
         })
     }
     
-    // 2
+    // 2 for changeToActive
     // for deleteWaitingChat func
     func deleteMessages(chat: MChat, completion: @escaping (Result<Void, Error>) -> Void) {
         let reference = waitingChatsRef.document(chat.friendIdentifier).collection("messages")
@@ -149,7 +149,7 @@ class FirestoreService {
         }
     }
     
-    // 1
+    // 1 for changeToActive
     func getWaitingChatMessages(chat: MChat, completion: @escaping (Result<[MMessage], Error>) -> Void) {
         var messages = [MMessage]()
         let reference = waitingChatsRef.document(chat.friendIdentifier).collection("messages")
@@ -188,7 +188,7 @@ class FirestoreService {
         }
     }
     
-    // 3
+    // 3 for changeToActive
     func createActiveChat(chat: MChat, messages: [MMessage], completion: @escaping (Result<Void, Error>) -> Void) {
         let messageRef = activeChatsRef.document(chat.friendIdentifier).collection("messages")
         
@@ -202,6 +202,39 @@ class FirestoreService {
                     if let error = error {
                       completion(.failure(error))
                       return
+                    }
+                    completion(.success(Void()))
+                }
+            }
+        }
+    }
+    
+    func sendMessage(chat: MChat, message: MMessage, completion: @escaping (Result<Void, Error>) -> Void) {
+        let friendRef = usersRef.document(chat.friendIdentifier).collection("activeChats").document(currentUser.identifier)
+        let friendMessageRef = friendRef.collection("messages")
+        let myRef = usersRef.document(currentUser.identifier).collection("activeChats").document(chat.friendIdentifier).collection("messages")
+//
+        // для друга, информация о чате заркальна - о вас
+        let chatForFriend = MChat(friendUsername: currentUser.username,
+                         friendAvatarStringURL: currentUser.avatarStringURL,
+                         friendIdentifier: currentUser.identifier,
+                         lastMessageContent: message.content)
+        friendRef.setData(chatForFriend.representation) { (error) in // регаем активный чат у друга
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            friendMessageRef.addDocument(data: message.representation) { (error) in // добавляем сообщение другу
+                    if let error = error {
+                        completion(.failure(error))
+                        return
+                    }
+                completion(.success(Void()))
+                myRef.addDocument(data: message.representation) { (error) in // добавляем сообщение себе
+                    if let error = error {
+                        completion(.failure(error))
+                        return
                     }
                     completion(.success(Void()))
                 }

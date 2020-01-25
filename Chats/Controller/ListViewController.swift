@@ -60,7 +60,7 @@ class ListViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(signOut))
         
-        waitingChatsListener = ListenerService.shared.whaitingChatsObserve(chats: waitingChats, currentUser: currentUser, completion: { (result) in
+        waitingChatsListener = ListenerService.shared.whaitingChatsObserve(chats: waitingChats, completion: { (result) in
             switch result {
                 
             case .success(let waitingChats):
@@ -77,7 +77,7 @@ class ListViewController: UIViewController {
             }
         })
         
-        activeChatsListener = ListenerService.shared.activeChatsObserve(chats: activeChats, currentUser: currentUser, completion: { (result) in
+        activeChatsListener = ListenerService.shared.activeChatsObserve(chats: activeChats, completion: { (result) in
             switch result {
             case .success(let activeChats):
                 self.activeChats = activeChats

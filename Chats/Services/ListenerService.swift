@@ -20,7 +20,11 @@ class ListenerService {
       return db.collection("users")
     }
     
-    func usersObserve(users: [MUser], currentUser: MUser, completion: @escaping (Result<[MUser], Error>) -> Void) -> ListenerRegistration? {
+    private var currentUser: MUser {
+        return FirestoreService.shared.currentUser
+    }
+    
+    func usersObserve(users: [MUser], completion: @escaping (Result<[MUser], Error>) -> Void) -> ListenerRegistration? {
         var users = users
         let usersListener = usersRef.addSnapshotListener({ (querySnapshot, error) in
             guard let snapshot = querySnapshot else {
@@ -34,7 +38,7 @@ class ListenerService {
                 switch diff.type {
                 case .added:
                     guard !users.contains(user) else { return }
-                    guard user != currentUser else { return }
+                    guard user != self.currentUser else { return }
                     users.append(user)
                 case .modified:
                     guard let index = users.firstIndex(of: user) else { return }
@@ -49,7 +53,7 @@ class ListenerService {
         return usersListener
     }
     
-    func whaitingChatsObserve(chats: [MChat], currentUser: MUser, completion: @escaping (Result<[MChat], Error>) -> Void) -> ListenerRegistration? {
+    func whaitingChatsObserve(chats: [MChat], completion: @escaping (Result<[MChat], Error>) -> Void) -> ListenerRegistration? {
         var chats = chats
         let chatsRef = db.collection(["users", currentUser.identifier, "waitingChats"].joined(separator: "/"))
         let chatsListener = chatsRef.addSnapshotListener({ (querySnapshot, error) in
@@ -78,7 +82,7 @@ class ListenerService {
         return chatsListener
     }
     
-    func activeChatsObserve(chats: [MChat], currentUser: MUser, completion: @escaping (Result<[MChat], Error>) -> Void) -> ListenerRegistration? {
+    func activeChatsObserve(chats: [MChat], completion: @escaping (Result<[MChat], Error>) -> Void) -> ListenerRegistration? {
         var chats = chats
         let chatsRef = db.collection(["users", currentUser.identifier, "activeChats"].joined(separator: "/"))
         let chatsListener = chatsRef.addSnapshotListener({ (querySnapshot, error) in
@@ -105,6 +109,29 @@ class ListenerService {
             completion(.success(chats))
         })
         return chatsListener
+    }
+    
+    func messagesObserve(chat: MChat, completion: @escaping (Result<MMessage, Error>) -> Void) -> ListenerRegistration? {
+        let reference = usersRef.document(currentUser.identifier).collection("activeChats").document(chat.friendIdentifier).collection("messages")
+        let messagesListener = reference.addSnapshotListener ({ (querySnapshot, error) in
+            guard let snapshot = querySnapshot else {
+                completion(.failure(error!))
+                return
+            }
+            snapshot.documentChanges.forEach { diff in
+                guard let message = MMessage(document: diff.document) else { return }
+                switch diff.type {
+                case .added:
+                    completion(.success(message))
+                case .modified:
+                    break
+                case .removed:
+                    break
+                }
+                
+            }
+        })
+        return messagesListener
     }
 }
 

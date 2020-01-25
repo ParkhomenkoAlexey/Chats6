@@ -51,7 +51,7 @@ class PeopleViewController: UIViewController {
         setupSearchBar()
         createDataSource()
         
-        usersListener = ListenerService.shared.usersObserve(users: users, currentUser: currentUser, completion: { (result) in
+        usersListener = ListenerService.shared.usersObserve(users: users, completion: { (result) in
             switch result {
             case .success(let users):
                 self.users = users
