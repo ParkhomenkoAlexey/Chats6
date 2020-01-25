@@ -58,7 +58,7 @@ class ListViewController: UIViewController {
         setupSearchBar()
         setupCollectionView()
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(signOut))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Log Out", style: .plain, target: self, action: #selector(signOut))
         
         waitingChatsListener = ListenerService.shared.whaitingChatsObserve(chats: waitingChats, completion: { (result) in
             switch result {
