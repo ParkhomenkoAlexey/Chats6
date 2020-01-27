@@ -11,16 +11,18 @@ import UIKit
 
 class ButtonFormView: UIView {
     
-    convenience init(label: UILabel, button: UIButton) {
-        self.init()
+     init(label: UILabel, button: UIButton) {
+        super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
         
         self.addSubview(label)
         self.addSubview(button)
         
         // label
-        label.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
-        label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
+        label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0)
+    ])
         
         // button
         button.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 20).isActive = true
@@ -30,5 +32,9 @@ class ButtonFormView: UIView {
         
         // чтобы высчитывался размер у self view
         bottomAnchor.constraint(equalTo: button.bottomAnchor).isActive = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

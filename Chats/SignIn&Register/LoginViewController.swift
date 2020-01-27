@@ -96,7 +96,8 @@ extension LoginViewController {
                                     axis: .vertical, spacing: 40)
         
         signUpButton.contentHorizontalAlignment = .leading
-        let bottomStackView = UIStackView(arrangedSubviews: [needAnAccountLabel, signUpButton], axis: .horizontal, spacing: -1) // чит, с нулем не работает
+        let bottomStackView = UIStackView(arrangedSubviews: [needAnAccountLabel, signUpButton], axis: .horizontal, spacing: 0) // чит, с нулем не работает
+        bottomStackView.alignment = .firstBaseline
         
         view.addSubview(welcomeLabel)
         view.addSubview(stackView)

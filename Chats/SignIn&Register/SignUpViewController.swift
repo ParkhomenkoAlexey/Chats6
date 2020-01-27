@@ -72,6 +72,7 @@ extension SignUpViewController {
         let passwordStackView = UIStackView(arrangedSubviews:
             [passwordLabel, passwordTextField],
                                             axis: .vertical, spacing: 0)
+        
         let confirmPasswordStackView = UIStackView(arrangedSubviews:
             [confirmPasswordLabel, confirmPasswordTextField],
                                                    axis: .vertical, spacing: 0)

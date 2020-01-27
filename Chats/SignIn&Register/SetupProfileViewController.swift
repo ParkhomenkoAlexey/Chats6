@@ -28,8 +28,6 @@ class SetupProfileViewController: UIViewController {
     
     let goToChatsButton = UIButton(title: "Go to chats!", titleColor: .white, backgroundColor: .buttonDark(), cornerRadius: 4)
     
-    let signUpButton = UIButton(title: "  Sign Up", titleColor: .buttonRed())
-    
     private let currentUser: User
     
     init(currentUser: User) {
@@ -108,8 +106,6 @@ extension SetupProfileViewController {
         let stackView = UIStackView(arrangedSubviews:
         [fullImageView, fullNameStackView, aboutMeStackView, sexStackView, goToChatsButton],
                                 axis: .vertical, spacing: 40)
-        
-        signUpButton.contentHorizontalAlignment = .leading
         
         view.addSubview(welcomeLabel)
         view.addSubview(fullImageView)
